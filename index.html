@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRASH DLC</title>
     <style>
         * {
@@ -37,14 +36,23 @@
         }
         .sub {
             color: #a78bfa;
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
-        .version {
-            color: #7b3fbf;
             font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .versions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
             margin-bottom: 25px;
-            letter-spacing: 1px;
+        }
+        .versions span {
+            background: #3d2b5e;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            color: #c084fc;
+            border: 1px solid #7b3fbf;
         }
         .btn {
             display: inline-block;
@@ -65,43 +73,57 @@
             transform: scale(1.03);
             box-shadow: 0 0 30px rgba(123, 63, 191, 0.5);
         }
-        .status {
-            margin-top: 20px;
-            color: #a78bfa;
-            font-size: 14px;
-        }
-        .status .online {
-            color: #2ecc71;
-        }
-        .footer {
-            color: #5b3f7f;
-            font-size: 13px;
-            margin-top: 20px;
-        }
         #msg {
             margin-top: 15px;
             color: #a78bfa;
             font-size: 14px;
             min-height: 20px;
         }
-        .beta-badge {
-            display: inline-block;
-            background: rgba(46, 204, 113, 0.15);
+        .status {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #7b5f9f;
+        }
+        .status .online {
             color: #2ecc71;
-            padding: 4px 16px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 600;
-            border: 1px solid rgba(46, 204, 113, 0.2);
-            margin-top: 4px;
+        }
+        .links {
+            margin-top: 18px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .links a {
+            color: #c084fc;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 1px solid #7b3fbf;
+            transition: 0.3s;
+        }
+        .links a:hover {
+            background: #7b3fbf;
+            color: #fff;
+        }
+        .footer {
+            color: #5b3f7f;
+            font-size: 13px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="box">
         <h1>🚀 CRASH DLC</h1>
-        <div class="sub">Установи клиент</div>
-        <div class="version">Cheat 1.21.4 / 1.21.11 <span class="beta-badge">BETA TEST</span></div>
+        <div class="sub">Установи клиент и участвуй в бета-тесте</div>
+
+        <div class="versions">
+            <span>⚡ 1.21.4</span>
+            <span>⚡ 1.21.11</span>
+            <span>🧪 BETA TEST</span>
+        </div>
 
         <a href="#" class="btn" onclick="install()">📥 Установить</a>
 
@@ -109,6 +131,11 @@
 
         <div class="status">
             <span class="online">●</span> Сервер: <span class="online">онлайн</span>
+        </div>
+
+        <div class="links">
+            <a href="https://discord.gg/DanFgwuyd" target="_blank">💬 Discord</a>
+            <a href="https://t.me/crashDLC" target="_blank">📲 Telegram</a>
         </div>
     </div>
 
