@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Установка</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRASH DLC</title>
     <style>
         * {
             margin: 0;
@@ -26,32 +27,37 @@
             text-align: center;
             border: 1px solid #7b3fbf;
             box-shadow: 0 0 50px rgba(123, 63, 191, 0.3);
-            max-width: 400px;
+            max-width: 450px;
             width: 100%;
         }
         h1 {
-            font-size: 36px;
+            font-size: 40px;
             color: #c084fc;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
-        p {
+        .sub {
             color: #a78bfa;
-            font-size: 16px;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+        .version {
+            color: #7b3fbf;
+            font-size: 14px;
             margin-bottom: 25px;
+            letter-spacing: 1px;
         }
         .btn {
             display: inline-block;
-            padding: 14px 40px;
+            padding: 16px 50px;
             background: #7b3fbf;
             color: #fff;
             border: none;
             border-radius: 12px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
             text-decoration: none;
-            margin: 6px 0;
             width: 100%;
         }
         .btn:hover {
@@ -59,19 +65,13 @@
             transform: scale(1.03);
             box-shadow: 0 0 30px rgba(123, 63, 191, 0.5);
         }
-        .btn-green {
-            background: #2ecc71;
+        .status {
+            margin-top: 20px;
+            color: #a78bfa;
+            font-size: 14px;
         }
-        .btn-green:hover {
-            background: #27ae60;
-            box-shadow: 0 0 30px rgba(46, 204, 113, 0.4);
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #7b3fbf;
-        }
-        .btn-outline:hover {
-            background: #7b3fbf;
+        .status .online {
+            color: #2ecc71;
         }
         .footer {
             color: #5b3f7f;
@@ -84,60 +84,26 @@
             font-size: 14px;
             min-height: 20px;
         }
-        .beta-box {
-            margin-top: 15px;
-            padding: 12px;
-            background: rgba(123, 63, 191, 0.15);
-            border-radius: 10px;
-            border: 1px dashed #7b3fbf;
-        }
-        .beta-box label {
-            color: #c084fc;
-            font-size: 14px;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .beta-box input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #7b3fbf;
-            background: #1a0a2e;
-            color: #fff;
-            font-size: 14px;
-            text-align: center;
-        }
-        .beta-box input:focus {
-            outline: none;
-            border-color: #c084fc;
-        }
-        .status {
-            margin-top: 10px;
-            font-size: 13px;
-        }
-        .status .online {
+        .beta-badge {
+            display: inline-block;
+            background: rgba(46, 204, 113, 0.15);
             color: #2ecc71;
-        }
-        .status .offline {
-            color: #e74c3c;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            margin-top: 4px;
         }
     </style>
 </head>
 <body>
     <div class="box">
         <h1>🚀 CRASH DLC</h1>
-        <p>Установи клиент и участвуй в бета-тесте</p>
+        <div class="sub">Установи клиент</div>
+        <div class="version">Cheat 1.21.4 / 1.21.11 <span class="beta-badge">BETA TEST</span></div>
 
-        <!-- КНОПКА УСТАНОВКИ -->
         <a href="#" class="btn" onclick="install()">📥 Установить</a>
-
-        <!-- БЕТА-ТЕСТ -->
-        <div class="beta-box">
-            <label>🔬 Бета-тест</label>
-            <input type="text" id="betaCode" placeholder="Введи код бета-теста">
-            <button onclick="betaTest()" class="btn btn-green" style="margin-top:8px;">✅ Активировать бета</button>
-            <div id="betaMsg" style="color:#a78bfa; font-size:13px; margin-top:6px;"></div>
-        </div>
 
         <div id="msg"></div>
 
@@ -151,25 +117,6 @@
     <script>
         function install() {
             document.getElementById('msg').textContent = '✅ Установка началась...';
-        }
-
-        function betaTest() {
-            const code = document.getElementById('betaCode').value.trim();
-            const msg = document.getElementById('betaMsg');
-
-            if (!code) {
-                msg.textContent = '❌ Введи код бета-теста!';
-                msg.style.color = '#e74c3c';
-                return;
-            }
-
-            if (code === 'BETA2026') {
-                msg.textContent = '✅ Бета-тест активирован! Добро пожаловать!';
-                msg.style.color = '#2ecc71';
-            } else {
-                msg.textContent = '❌ Неверный код! Попробуй ещё.';
-                msg.style.color = '#e74c3c';
-            }
         }
     </script>
 </body>
