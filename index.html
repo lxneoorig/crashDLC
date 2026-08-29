@@ -10,7 +10,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background: #0a0a12;
             color: #fff;
             min-height: 100vh;
@@ -23,6 +23,9 @@
             align-items: center;
             border-bottom: 2px solid #ff6b35;
             flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .logo {
             font-size: 24px;
@@ -31,6 +34,12 @@
         }
         .logo span {
             color: #fff;
+        }
+        nav {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            align-items: center;
         }
         nav a {
             color: #fff;
@@ -53,8 +62,20 @@
         .nav-login:hover {
             background: #ff8255 !important;
         }
+        .balance-badge {
+            background: rgba(46,204,113,0.15);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 14px;
+            border: 1px solid rgba(46,204,113,0.2);
+            color: #2ecc71;
+            font-weight: 600;
+        }
+        .hidden {
+            display: none !important;
+        }
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -64,10 +85,15 @@
             padding: 30px;
             margin-bottom: 25px;
             border: 1px solid #2a2a3e;
+            transition: 0.3s;
+        }
+        .card:hover {
+            border-color: rgba(255,107,53,0.2);
         }
         .card h2 {
             color: #ff6b35;
             margin-bottom: 15px;
+            font-size: 24px;
         }
         .card p {
             color: #aaa;
@@ -84,14 +110,11 @@
             font-size: 15px;
             cursor: pointer;
             transition: 0.3s;
+            text-align: center;
         }
         .btn:hover {
             background: #ff8255;
             transform: scale(1.02);
-        }
-        .btn-block {
-            display: block;
-            width: 100%;
         }
         .btn-green {
             background: #2ecc71;
@@ -99,8 +122,27 @@
         .btn-green:hover {
             background: #27ae60;
         }
-        .hidden {
-            display: none !important;
+        .btn-red {
+            background: #e74c3c;
+        }
+        .btn-red:hover {
+            background: #c0392b;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         input {
             width: 100%;
@@ -129,6 +171,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
         .avatar {
             width: 60px;
@@ -145,15 +188,22 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
             background: #2ecc71;
             color: #fff;
             font-weight: 500;
             z-index: 999;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            max-width: 400px;
         }
         .toast.error {
             background: #e74c3c;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         footer {
             text-align: center;
@@ -181,6 +231,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
         .role {
             font-size: 12px;
@@ -192,15 +243,99 @@
             background: rgba(255,107,53,0.2);
             color: #ff6b35;
         }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        .balance {
+            color: #2ecc71;
+            font-weight: 700;
+            font-size: 18px;
         }
-        @media (max-width: 600px) {
+        .balance-negative {
+            color: #e74c3c;
+        }
+        .product {
+            background: #0a0a12;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            border: 1px solid #2a2a3e;
+            transition: 0.3s;
+        }
+        .product:hover {
+            border-color: #ff6b35;
+        }
+        .product .info h3 {
+            color: #fff;
+            font-size: 18px;
+        }
+        .product .info p {
+            color: #888;
+            font-size: 14px;
+        }
+        .product .price {
+            color: #f39c12;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        .history-item {
+            padding: 10px 15px;
+            background: #0a0a12;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-left: 3px solid #2ecc71;
+        }
+        .history-item .date {
+            color: #666;
+            font-size: 12px;
+        }
+        .history-item .amount {
+            font-weight: 700;
+        }
+        .history-item .amount.plus {
+            color: #2ecc71;
+        }
+        .history-item .amount.minus {
+            color: #e74c3c;
+        }
+        .history-item .desc {
+            color: #aaa;
+        }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 700px) {
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
             header { flex-direction: column; gap: 10px; }
-            nav { display: flex; flex-wrap: wrap; justify-content: center; }
+            nav { justify-content: center; }
             .profile-header { flex-direction: column; text-align: center; }
+            .product { flex-direction: column; text-align: center; gap: 10px; }
+        }
+        .unlimited-badge {
+            background: rgba(241,196,15,0.15);
+            color: #f1c40f;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 11px;
+            border: 1px solid rgba(241,196,15,0.2);
+        }
+        .license-active {
+            background: rgba(46,204,113,0.1);
+            border: 1px solid rgba(46,204,113,0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #2ecc71;
+            font-weight: 600;
+            display: inline-block;
         }
     </style>
 </head>
@@ -211,10 +346,12 @@
     <div class="logo">CRASH<span>DLC</span></div>
     <nav>
         <a onclick="showPage('main')" id="navMain">Главная</a>
+        <a onclick="showPage('shop')" id="navShop" class="hidden">🛒 Магазин</a>
         <a onclick="showPage('community')" id="navCommunity">Сообщество</a>
-        <a onclick="showPage('login')" id="navLogin" class="nav-login">Вход</a>
         <a onclick="showPage('profile')" id="navProfile" class="hidden">Профиль</a>
+        <a onclick="showPage('login')" id="navLogin" class="nav-login">Вход</a>
         <a onclick="logout()" id="navLogout" class="hidden">Выйти</a>
+        <span id="balanceDisplay" class="hidden balance-badge">💰 0 ₽</span>
     </nav>
 </header>
 
@@ -249,8 +386,47 @@
         </div>
     </div>
 
+    <!-- ===== МАГАЗИН ===== -->
+    <div id="page-shop" class="hidden">
+        <div class="card">
+            <h2>🛒 Магазин</h2>
+            <p>Покупай лаунчер навсегда! Пополни баланс и активируй лицензию.</p>
+            <br>
+            <div class="shop-grid">
+                <div class="product">
+                    <div class="info">
+                        <h3>🚀 Лаунчер + Чит</h3>
+                        <p>Доступ навсегда. Все функции.</p>
+                    </div>
+                    <div>
+                        <div class="price">200 ₽</div>
+                        <button onclick="buyLauncher()" class="btn btn-gold" style="margin-top:8px; width:100%;">Купить</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="info">
+                        <h3>💰 Пополнить баланс</h3>
+                        <p>Добавь средства на счёт</p>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+                        <button onclick="addBalance(100)" class="btn btn-green" style="flex:1;">+100 ₽</button>
+                        <button onclick="addBalance(500)" class="btn btn-green" style="flex:1;">+500 ₽</button>
+                        <button onclick="addBalance(1000)" class="btn btn-green" style="flex:1;">+1000 ₽</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📜 История операций</h2>
+            <div id="historyList">
+                <p style="color:#666;">История пуста</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== СООБЩЕСТВО ===== -->
-    <div id="page-community" class="hidden">
+    <div id="page-community">
         <div class="card">
             <h2>💬 Сообщество</h2>
             <p>Присоединяйся к нам!</p>
@@ -266,6 +442,11 @@
                 <div style="color:#666; font-size:12px;">29 августа 2026</div>
                 <strong>⚙️ Разработка Crash DLC v3.0</strong>
                 <p style="color:#888; font-size:14px; margin-top:4px;">Началась разработка новой версии!</p>
+            </div>
+            <div style="background:#0a0a12; padding:15px; border-radius:8px; border-left:3px solid #f39c12;">
+                <div style="color:#666; font-size:12px;">28 августа 2026</div>
+                <strong>🛒 Открыт магазин!</strong>
+                <p style="color:#888; font-size:14px; margin-top:4px;">Покупай лаунчер за 200 ₽ навсегда!</p>
             </div>
         </div>
     </div>
@@ -285,7 +466,7 @@
             </div>
             <button onclick="login()" class="btn btn-block">Войти</button>
             <br>
-            <p id="loginMsg" style="text-align:center; margin-top:10px;"></p>
+            <p id="loginMsg" style="text-align:center;"></p>
         </div>
     </div>
 
@@ -294,9 +475,14 @@
         <div class="card">
             <div class="profile-header">
                 <div class="avatar" id="profileAvatar">L</div>
-                <div>
+                <div style="flex:1;">
                     <h2 id="profileName">Логин</h2>
                     <p id="profileRole" style="color:#888;">Игрок</p>
+                    <p style="margin-top:8px;">
+                        <span class="balance" id="profileBalance">💰 0 ₽</span>
+                        <span id="licenseStatus" class="hidden license-active" style="margin-left:12px;">✅ Лицензия активна</span>
+                        <span id="unlimitedBadge" class="hidden unlimited-badge" style="margin-left:8px;">♾ Бесконечный баланс</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -323,19 +509,32 @@
 
 <!-- ===== JAVASCRIPT ===== -->
 <script>
-    // ===== СПИСОК АДМИНОВ =====
-    const ADMINS = ['lxneo', 'fridiz'];
-
     // ===== ПОЛЬЗОВАТЕЛИ =====
+    const ADMINS = ['lxneo', 'fridiz'];
     const USERS = [
-        { name: 'lxneo', password: '1234', role: 'admin' },
-        { name: 'fridiz', password: '1234', role: 'admin' },
-        { name: 'user1', password: '1234', role: 'user' },
-        { name: 'user2', password: '1234', role: 'user' }
+        { name: 'lxneo', password: '1234', role: 'admin', balance: 999999, license: true },
+        { name: 'fridiz', password: '1234', role: 'admin', balance: 999999, license: true },
+        { name: 'user1', password: '1234', role: 'user', balance: 500, license: false },
+        { name: 'user2', password: '1234', role: 'user', balance: 0, license: false }
     ];
 
-    // ===== ТЕКУЩИЙ ПОЛЬЗОВАТЕЛЬ =====
     let currentUser = null;
+
+    // ===== ЗАГРУЗКА И СОХРАНЕНИЕ =====
+    function saveUsers() {
+        localStorage.setItem('users', JSON.stringify(USERS));
+    }
+
+    function loadUsers() {
+        const data = localStorage.getItem('users');
+        if (data) {
+            const parsed = JSON.parse(data);
+            USERS.length = 0;
+            parsed.forEach(u => USERS.push(u));
+        } else {
+            saveUsers();
+        }
+    }
 
     // ===== ПОКАЗАТЬ СТРАНИЦУ =====
     function showPage(page) {
@@ -345,10 +544,10 @@
         const target = document.getElementById('page-' + page);
         if (target) target.classList.remove('hidden');
 
-        // Обновляем навигацию
         document.querySelectorAll('nav a').forEach(a => a.classList.remove('nav-login'));
         const navMap = {
             'main': 'navMain',
+            'shop': 'navShop',
             'community': 'navCommunity',
             'login': 'navLogin',
             'profile': 'navProfile'
@@ -359,10 +558,11 @@
         if (page === 'profile') {
             updateProfile();
         }
-
-        // Если на странице логина, очищаем сообщение
         if (page === 'login') {
             document.getElementById('loginMsg').textContent = '';
+        }
+        if (page === 'shop') {
+            renderHistory();
         }
     }
 
@@ -378,8 +578,9 @@
             return;
         }
 
-        // Ищем пользователя
-        const found = USERS.find(u => u.name === loginInput && u.password === passInput);
+        const loginLower = loginInput.toLowerCase();
+        loadUsers();
+        const found = USERS.find(u => u.name === loginLower && u.password === passInput);
 
         if (found) {
             currentUser = found;
@@ -409,74 +610,7 @@
         document.getElementById('navLogin').classList.toggle('hidden', isLoggedIn);
         document.getElementById('navLogout').classList.toggle('hidden', !isLoggedIn);
         document.getElementById('navProfile').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('navShop').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('balanceDisplay').classList.toggle('hidden', !isLoggedIn);
 
-        if (isLoggedIn) {
-            document.getElementById('profileName').textContent = currentUser.name;
-            document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
-            const roleEl = document.getElementById('profileRole');
-            if (currentUser.role === 'admin') {
-                roleEl.textContent = '👑 Администратор';
-                roleEl.style.color = '#ff6b35';
-            } else {
-                roleEl.textContent = '🎮 Игрок';
-                roleEl.style.color = '#888';
-            }
-            renderAdminPanel();
-        }
-    }
-
-    // ===== ПРОФИЛЬ =====
-    function updateProfile() {
-        if (!currentUser) {
-            showPage('login');
-            return;
-        }
-        updateUI();
-    }
-
-    // ===== АДМИН-ПАНЕЛЬ =====
-    function renderAdminPanel() {
-        const adminPanel = document.getElementById('adminPanel');
-        const userList = document.getElementById('userList');
-
-        if (currentUser && currentUser.role === 'admin') {
-            adminPanel.classList.remove('hidden');
-            userList.innerHTML = USERS.map(u => `
-                <li>
-                    <span>${u.name} ${u.role === 'admin' ? '<span class="admin-badge">Админ</span>' : ''}</span>
-                    <span class="role ${u.role === 'admin' ? 'admin' : ''}">${u.role === 'admin' ? 'Админ' : 'Игрок'}</span>
-                </li>
-            `).join('');
-        } else {
-            adminPanel.classList.add('hidden');
-        }
-    }
-
-    // ===== УВЕДОМЛЕНИЯ =====
-    function showToast(message, type = 'success') {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = 'toast';
-        if (type === 'error') toast.classList.add('error');
-        toast.classList.remove('hidden');
-        clearTimeout(toast._timer);
-        toast._timer = setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 3000);
-    }
-
-    // ===== ВХОД ПО ENTER =====
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !document.getElementById('page-login').classList.contains('hidden')) {
-            login();
-        }
-    });
-
-    // ===== ЗАГРУЗКА =====
-    document.addEventListener('DOMContentLoaded', function() {
-        showPage('main');
-    });
-</script>
-
-</body>
-</html>
+        if 
