@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRASH DLC — Minecraft Client</title>
+    <title>CRASH DLC — как Wild Client</title>
     <style>
-        /* ===== ОБЩИЕ СТИЛИ ===== */
+        /* ===== БАЗА ===== */
         * {
             margin: 0;
             padding: 0;
@@ -13,259 +13,193 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #0a0a0f;
+            background: #0b0e14;
             color: #fff;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0f;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #ff6b35;
-            border-radius: 10px;
-        }
-
-        /* ===== АНИМАЦИИ ===== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255,107,53,0.2); }
-            50% { box-shadow: 0 0 40px rgba(255,107,53,0.5); }
+            display: flex;
+            flex-direction: column;
         }
 
         /* ===== ШАПКА ===== */
-        header {
-            background: rgba(10, 10, 15, 0.95);
+        .header {
+            background: #141a24;
             padding: 12px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 2px solid #ff6b35;
             flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(20px);
         }
         .logo {
             font-size: 26px;
             font-weight: 900;
-            background: linear-gradient(135deg, #ff6b35, #ff4500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ff6b35;
             letter-spacing: 1px;
         }
         .logo span {
-            -webkit-text-fill-color: #fff;
-            font-weight: 300;
+            color: #fff;
         }
-        nav {
+        .nav {
             display: flex;
-            gap: 4px;
+            gap: 5px;
             flex-wrap: wrap;
             align-items: center;
         }
-        nav a {
-            color: rgba(255,255,255,0.6);
+        .nav a {
+            color: #aaa;
             text-decoration: none;
             padding: 8px 16px;
             border-radius: 8px;
+            font-size: 14px;
             font-weight: 500;
-            font-size: 13px;
             cursor: pointer;
-            transition: 0.3s;
-            border: none;
+            transition: 0.2s;
             background: none;
+            border: none;
         }
-        nav a:hover {
+        .nav a:hover {
+            background: rgba(255, 107, 53, 0.15);
             color: #fff;
-            background: rgba(255,107,53,0.1);
         }
-        nav a.active {
-            color: #fff;
-            background: rgba(255,107,53,0.15);
-        }
-        .nav-login {
-            color: #fff !important;
+        .nav .active {
             background: #ff6b35;
-            border-radius: 8px;
-            padding: 8px 22px;
-            font-weight: 600;
+            color: #fff;
         }
-        .nav-login:hover {
-            background: #ff8255 !important;
-            transform: scale(1.02);
+        .nav .login-btn {
+            background: #ff6b35;
+            color: #fff;
+            padding: 8px 22px;
+            border-radius: 8px;
+        }
+        .nav .login-btn:hover {
+            background: #ff8255;
         }
         .hidden {
             display: none !important;
         }
 
-        /* ===== КОНТЕЙНЕР ===== */
+        /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
         .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 30px 20px;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
         }
 
         /* ===== КАРТОЧКИ ===== */
         .card {
-            background: rgba(255,255,255,0.03);
+            background: #141a24;
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-            animation: fadeIn 0.6s ease;
-        }
-        .card:hover {
-            border-color: rgba(255,107,53,0.2);
-            background: rgba(255,255,255,0.05);
+            border: 1px solid #2a2a3e;
+            transition: 0.2s;
         }
         .card h2 {
+            color: #ff6b35;
             font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #fff;
+            margin-bottom: 12px;
         }
         .card p {
-            color: rgba(255,255,255,0.5);
-            line-height: 1.7;
-            font-size: 14px;
-        }
-
-        /* ===== ГЛАВНАЯ ===== */
-        .hero {
-            text-align: center;
-            padding: 60px 20px 40px;
-            background: linear-gradient(180deg, rgba(255,107,53,0.05) 0%, transparent 100%);
-            border-radius: 20px;
-            border: none;
-        }
-        .hero h1 {
-            font-size: 4.5em;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ff6b35, #ff4500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 3px;
-        }
-        .hero p {
-            font-size: 1.2em;
-            color: rgba(255,255,255,0.4);
-            margin-top: 10px;
-            letter-spacing: 1px;
-        }
-        .hero .badges {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 25px 0 30px;
-        }
-        .hero .badges span {
-            background: rgba(255,255,255,0.05);
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-size: 12px;
-            color: rgba(255,255,255,0.5);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .hero .btn-group {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         /* ===== КНОПКИ ===== */
         .btn {
-            padding: 12px 32px;
+            display: inline-block;
+            padding: 12px 30px;
             background: #ff6b35;
             color: #fff;
             border: none;
             border-radius: 8px;
+            font-size: 15px;
             font-weight: 600;
-            font-size: 14px;
             cursor: pointer;
-            transition: 0.3s;
-            letter-spacing: 0.5px;
+            transition: 0.2s;
         }
         .btn:hover {
             background: #ff8255;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255,107,53,0.2);
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.05);
-            box-shadow: none;
+            transform: scale(1.02);
         }
         .btn-green {
             background: #2ecc71;
         }
         .btn-green:hover {
             background: #27ae60;
-            box-shadow: 0 10px 30px rgba(46,204,113,0.2);
         }
         .btn-gold {
             background: #f39c12;
         }
         .btn-gold:hover {
             background: #e67e22;
-            box-shadow: 0 10px 30px rgba(243,156,18,0.2);
         }
         .btn-block {
             width: 100%;
             display: block;
             text-align: center;
         }
-        .btn-group {
+
+        /* ===== ГЛАВНАЯ ===== */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .hero h1 {
+            font-size: 4em;
+            color: #ff6b35;
+        }
+        .hero p {
+            color: #888;
+            font-size: 1.2em;
+            margin-top: 8px;
+        }
+        .hero .tags {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            justify-content: center;
             flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .hero .tags span {
+            background: #1a1a2e;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            border: 1px solid #2a2a3e;
+            color: #aaa;
         }
 
-        /* ===== ФОРМЫ ===== */
-        .form-group {
-            margin-bottom: 14px;
+        /* ===== ВХОД ===== */
+        .login-box {
+            max-width: 380px;
+            margin: 0 auto;
         }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: rgba(255,255,255,0.6);
-            font-weight: 500;
-            font-size: 13px;
-        }
-        .form-group input {
+        .login-box input {
             width: 100%;
             padding: 12px 16px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.06);
-            background: rgba(255,255,255,0.03);
+            border: 1px solid #2a2a3e;
+            background: #0a0a12;
             color: #fff;
-            font-size: 14px;
-            transition: 0.3s;
+            font-size: 15px;
+            margin-bottom: 12px;
         }
-        .form-group input:focus {
+        .login-box input:focus {
             border-color: #ff6b35;
             outline: none;
-            background: rgba(255,255,255,0.05);
         }
-        .form-group input::placeholder {
-            color: rgba(255,255,255,0.2);
+        .login-box label {
+            display: block;
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        #loginMsg {
+            text-align: center;
+            margin-top: 12px;
+            font-weight: bold;
         }
 
         /* ===== ПРОФИЛЬ ===== */
@@ -279,39 +213,12 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b35, #ff4500);
+            background: #ff6b35;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 700;
-        }
-        .profile-name {
-            font-size: 22px;
-            font-weight: 700;
-        }
-        .profile-role {
-            color: rgba(255,255,255,0.4);
-            font-size: 13px;
-        }
-        .profile-role.admin {
-            color: #ff6b35;
-        }
-
-        /* ===== БАЛАНС ===== */
-        .balance {
-            color: #2ecc71;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        .balance-badge {
-            background: rgba(46,204,113,0.1);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 13px;
-            border: 1px solid rgba(46,204,113,0.1);
-            color: #2ecc71;
-            font-weight: 600;
         }
 
         /* ===== МАГАЗИН ===== */
@@ -321,61 +228,22 @@
             gap: 15px;
         }
         .product {
-            background: rgba(255,255,255,0.02);
+            background: #0a0a12;
             padding: 20px;
             border-radius: 12px;
+            border: 1px solid #2a2a3e;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
-        .product:hover {
-            border-color: rgba(255,107,53,0.2);
-            background: rgba(255,255,255,0.04);
-        }
-        .product h3 {
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .product p {
-            color: rgba(255,255,255,0.3);
-            font-size: 12px;
         }
         .product .price {
             color: #f39c12;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        /* ===== ИСТОРИЯ ===== */
-        .history-item {
-            padding: 10px 15px;
-            background: rgba(255,255,255,0.02);
-            border-radius: 8px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border-left: 3px solid #2ecc71;
-        }
-        .history-item .date {
-            color: rgba(255,255,255,0.2);
-            font-size: 11px;
-        }
-        .history-item .amount {
+            font-size: 20px;
             font-weight: 700;
         }
-        .history-item .amount.plus {
-            color: #2ecc71;
-        }
-        .history-item .amount.minus {
-            color: #e74c3c;
-        }
 
-        /* ===== УВЕДОМЛЕНИЯ ===== */
+        /* ===== УВЕДОМЛЕНИЕ ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -386,112 +254,42 @@
             color: #fff;
             font-weight: 500;
             z-index: 999;
-            animation: fadeIn 0.4s ease;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            font-size: 14px;
+            animation: fadeIn 0.3s ease;
         }
         .toast.error {
             background: #e74c3c;
         }
-
-        /* ===== АДМИНКА ===== */
-        .user-list {
-            list-style: none;
-            padding: 0;
-        }
-        .user-list li {
-            padding: 10px 15px;
-            background: rgba(255,255,255,0.02);
-            border-radius: 8px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-        .user-list .role {
-            font-size: 11px;
-            padding: 3px 12px;
-            border-radius: 40px;
-            background: rgba(255,255,255,0.05);
-        }
-        .user-list .role.admin {
-            background: rgba(255,107,53,0.15);
-            color: #ff6b35;
-        }
-        .admin-badge {
-            background: rgba(255,107,53,0.15);
-            padding: 2px 12px;
-            border-radius: 40px;
-            font-size: 10px;
-            color: #ff6b35;
-            margin-left: 8px;
-            font-weight: 600;
-        }
-        .license-badge {
-            background: rgba(46,204,113,0.1);
-            padding: 2px 12px;
-            border-radius: 40px;
-            font-size: 10px;
-            color: #2ecc71;
-            margin-left: 8px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== ПОДВАЛ ===== */
-        footer {
+        .footer {
             text-align: center;
-            padding: 30px;
-            color: rgba(255,255,255,0.1);
-            border-top: 1px solid rgba(255,255,255,0.03);
-            margin-top: 30px;
-            font-size: 12px;
-        }
-
-        /* ===== НОВОСТИ ===== */
-        .news-item {
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border-left: 3px solid #ff6b35;
-            background: rgba(255,255,255,0.02);
-        }
-        .news-item .date {
-            color: rgba(255,255,255,0.2);
-            font-size: 11px;
-        }
-        .news-item strong {
-            font-size: 15px;
-        }
-        .news-item p {
-            color: rgba(255,255,255,0.4);
+            padding: 25px;
+            color: #444;
+            border-top: 1px solid #1a1a2e;
+            margin-top: 20px;
             font-size: 13px;
-            margin-top: 4px;
         }
 
         /* ===== АДАПТИВ ===== */
         @media (max-width: 700px) {
-            header {
+            .header {
                 flex-direction: column;
                 gap: 10px;
                 padding: 12px 15px;
             }
-            nav {
+            .nav {
                 justify-content: center;
-                gap: 3px;
-            }
-            nav a {
-                font-size: 12px;
-                padding: 6px 12px;
             }
             .hero h1 {
-                font-size: 2.8em;
+                font-size: 2.6em;
             }
             .shop-grid {
                 grid-template-columns: 1fr;
-            }
-            .btn-group {
-                flex-direction: column;
             }
             .btn {
                 width: 100%;
@@ -501,60 +299,48 @@
                 flex-direction: column;
                 text-align: center;
             }
-            .container {
-                padding: 15px;
-            }
-            .card {
-                padding: 20px;
-            }
         }
     </style>
 </head>
 <body>
 
 <!-- ===== ШАПКА ===== -->
-<header>
+<div class="header">
     <div class="logo">CRASH<span>DLC</span></div>
-    <nav>
+    <div class="nav">
         <a onclick="showPage('main')" id="navMain" class="active">Главная</a>
         <a onclick="showPage('shop')" id="navShop" class="hidden">Магазин</a>
         <a onclick="showPage('community')" id="navCommunity">Сообщество</a>
         <a onclick="showPage('profile')" id="navProfile" class="hidden">Профиль</a>
-        <a onclick="showPage('login')" id="navLogin" class="nav-login">Вход</a>
+        <a onclick="showPage('login')" id="navLogin" class="login-btn">Вход</a>
         <a onclick="logout()" id="navLogout" class="hidden">Выйти</a>
-        <span id="balanceDisplay" class="hidden balance-badge">💰 0 ₽</span>
-    </nav>
-</header>
+    </div>
+</div>
 
 <!-- ===== КОНТЕЙНЕР ===== -->
 <div class="container">
 
     <!-- ===== ГЛАВНАЯ ===== -->
     <div id="page-main">
-        <div class="hero">
+        <div class="card hero">
             <h1>CRASH DLC</h1>
             <p>Мощный Minecraft клиент для профессионалов</p>
-            <div class="badges">
+            <div class="tags">
                 <span>🔒 Анти-бан</span>
                 <span>⚡ Автофарм</span>
                 <span>🛡 ScreenShare</span>
-                <span>🚀 Fly</span>
             </div>
-            <div class="btn-group">
-                <button onclick="showPage('login')" class="btn">🚀 Начать</button>
-                <button onclick="showPage('community')" class="btn btn-outline">Сообщество</button>
-            </div>
+            <button onclick="showPage('login')" class="btn">🚀 Начать</button>
         </div>
-
         <div class="card">
             <h2>🔥 Особенности</h2>
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
-                <div style="padding:8px 0; color:rgba(255,255,255,0.6); font-size:14px;">✅ Автокликер</div>
-                <div style="padding:8px 0; color:rgba(255,255,255,0.6); font-size:14px;">✅ Автофарм</div>
-                <div style="padding:8px 0; color:rgba(255,255,255,0.6); font-size:14px;">✅ X-Ray</div>
-                <div style="padding:8px 0; color:rgba(255,255,255,0.6); font-size:14px;">✅ Fly / Speed</div>
-                <div style="padding:8px 0; color:rgba(255,255,255,0.6); font-size:14px;">✅ Анти-бан</div>
-                <div style="padding:8px 0; color:rgba(255,255,255,0.6); font-size:14px;">✅ ScreenShare</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <div style="color:#aaa; padding:6px 0;">✅ Автокликер</div>
+                <div style="color:#aaa; padding:6px 0;">✅ Автофарм</div>
+                <div style="color:#aaa; padding:6px 0;">✅ X-Ray</div>
+                <div style="color:#aaa; padding:6px 0;">✅ Fly / Speed</div>
+                <div style="color:#aaa; padding:6px 0;">✅ Анти-бан</div>
+                <div style="color:#aaa; padding:6px 0;">✅ ScreenShare</div>
             </div>
         </div>
     </div>
@@ -563,13 +349,13 @@
     <div id="page-shop" class="hidden">
         <div class="card">
             <h2>🛒 Магазин</h2>
-            <p>Покупай лаунчер навсегда или пополни баланс</p>
+            <p>Покупай лаунчер навсегда</p>
             <br>
             <div class="shop-grid">
                 <div class="product">
                     <div>
                         <h3>🚀 Лаунчер</h3>
-                        <p>Навсегда</p>
+                        <p style="color:#888;">Навсегда</p>
                     </div>
                     <div>
                         <div class="price">200 ₽</div>
@@ -579,7 +365,7 @@
                 <div class="product">
                     <div>
                         <h3>💰 Пополнить</h3>
-                        <p>Баланс</p>
+                        <p style="color:#888;">Баланс</p>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
                         <button onclick="addBalance(100)" class="btn btn-green" style="flex:1;">+100</button>
@@ -591,7 +377,7 @@
         </div>
         <div class="card">
             <h2>📜 История</h2>
-            <div id="historyList"><p style="color:rgba(255,255,255,0.2);">История пуста</p></div>
+            <div id="historyList"><p style="color:#666;">История пуста</p></div>
         </div>
     </div>
 
@@ -599,43 +385,33 @@
     <div id="page-community">
         <div class="card">
             <h2>💬 Сообщество</h2>
-            <p>Присоединяйся к нам в социальных сетях</p>
+            <p>Присоединяйся к нам</p>
             <br>
-            <div class="btn-group">
-                <a href="#" class="btn btn-block">📱 Discord</a>
-                <a href="#" class="btn btn-green btn-block">📸 Telegram</a>
-            </div>
+            <button onclick="showToast('Discord — скоро')" class="btn btn-block">📱 Discord</button>
+            <br>
+            <button onclick="showToast('Telegram — скоро')" class="btn btn-green btn-block">📸 Telegram</button>
         </div>
         <div class="card">
             <h2>📢 Новости</h2>
-            <div class="news-item">
-                <div class="date">29 августа 2026</div>
+            <div style="background:#0a0a12; padding:15px; border-radius:8px; border-left:3px solid #ff6b35;">
+                <div style="color:#666; font-size:12px;">29 августа 2026</div>
                 <strong>⚙️ Разработка Crash DLC v3.0</strong>
-                <p>Началась разработка новой версии с улучшенным анти-баном</p>
-            </div>
-            <div class="news-item" style="border-left-color: #f39c12;">
-                <div class="date">28 августа 2026</div>
-                <strong>🛒 Открытие магазина</strong>
-                <p>Теперь ты можешь купить лаунчер навсегда за 200 ₽</p>
+                <p style="color:#888; font-size:14px; margin-top:4px;">Началась разработка новой версии</p>
             </div>
         </div>
     </div>
 
     <!-- ===== ВХОД ===== -->
     <div id="page-login" class="hidden">
-        <div class="card" style="max-width:400px; margin:0 auto;">
+        <div class="card login-box">
             <h2 style="text-align:center;">🔑 Вход</h2>
             <br>
-            <div class="form-group">
-                <label>Логин</label>
-                <input type="text" id="loginInput" placeholder="Введите логин">
-            </div>
-            <div class="form-group">
-                <label>Пароль</label>
-                <input type="password" id="passInput" placeholder="Введите пароль">
-            </div>
+            <label>Логин</label>
+            <input type="text" id="loginInput" placeholder="Введите логин">
+            <label>Пароль</label>
+            <input type="password" id="passInput" placeholder="Введите пароль">
             <button onclick="login()" class="btn btn-block">Войти</button>
-            <p id="loginMsg" style="text-align:center; margin-top:10px; font-weight:bold;"></p>
+            <div id="loginMsg"></div>
         </div>
     </div>
 
@@ -645,4 +421,148 @@
             <div class="profile-header">
                 <div class="avatar" id="profileAvatar">L</div>
                 <div>
-                    <div class="pr
+                    <h2 id="profileName">Логин</h2>
+                    <p id="profileRole" style="color:#888;">Игрок</p>
+                    <p><span id="profileBalance" style="color:#2ecc71; font-weight:700;">💰 0 ₽</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== ПОДВАЛ ===== -->
+<div class="footer">© 2026 CRASH DLC</div>
+
+<!-- ===== УВЕДОМЛЕНИЯ ===== -->
+<div id="toast" class="hidden toast"></div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // ===== ПОЛЬЗОВАТЕЛИ =====
+    const USERS = [
+        { name: 'lxneo', password: '1234', role: 'admin', balance: 999999 },
+        { name: 'fridiz', password: '1234', role: 'admin', balance: 999999 },
+        { name: 'user1', password: '1234', role: 'user', balance: 500 }
+    ];
+
+    let currentUser = null;
+
+    function findUser(name) {
+        return USERS.find(u => u.name.toLowerCase() === name.toLowerCase());
+    }
+
+    // ===== СТРАНИЦЫ =====
+    function showPage(page) {
+        document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+        const target = document.getElementById('page-' + page);
+        if (target) target.classList.remove('hidden');
+
+        document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+        const map = {
+            'main': 'navMain',
+            'shop': 'navShop',
+            'community': 'navCommunity',
+            'profile': 'navProfile',
+            'login': 'navLogin'
+        };
+        const el = document.getElementById(map[page]);
+        if (el) el.classList.add('active');
+
+        if (page === 'login') document.getElementById('loginMsg').textContent = '';
+        if (page === 'profile') updateProfile();
+    }
+
+    // ===== ВХОД =====
+    function login() {
+        const name = document.getElementById('loginInput').value.trim();
+        const pass = document.getElementById('passInput').value.trim();
+        const msg = document.getElementById('loginMsg');
+
+        if (!name || !pass) {
+            msg.textContent = '❌ Заполни все поля!';
+            msg.style.color = '#e74c3c';
+            return;
+        }
+
+        const user = findUser(name);
+        if (user && user.password === pass) {
+            currentUser = user;
+            msg.textContent = '✅ Вход выполнен!';
+            msg.style.color = '#2ecc71';
+            updateUI();
+            showPage('profile');
+            showToast('Добро пожаловать, ' + user.name + '!');
+        } else {
+            msg.textContent = '❌ Неверный логин или пароль!';
+            msg.style.color = '#e74c3c';
+        }
+    }
+
+    // ===== ВЫХОД =====
+    function logout() {
+        currentUser = null;
+        updateUI();
+        showPage('main');
+        showToast('Вы вышли');
+    }
+
+    // ===== ОБНОВЛЕНИЕ =====
+    function updateUI() {
+        const logged = currentUser !== null;
+        document.getElementById('navLogin').style.display = logged ? 'none' : '';
+        document.getElementById('navLogout').style.display = logged ? '' : 'none';
+        document.getElementById('navProfile').style.display = logged ? '' : 'none';
+        document.getElementById('navShop').style.display = logged ? '' : 'none';
+
+        if (logged) {
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('profileRole').textContent = currentUser.role === 'admin' ? '👑 Администратор' : '🎮 Игрок';
+            document.getElementById('profileBalance').textContent = '💰 ' + (currentUser.role === 'admin' ? '♾ Бесконечно' : currentUser.balance + ' ₽');
+        }
+    }
+
+    function updateProfile() {
+        if (!currentUser) { showPage('login'); return; }
+        updateUI();
+    }
+
+    // ===== МАГАЗИН =====
+    function buyLauncher() {
+        if (!currentUser) { showToast('Сначала войдите!', 'error'); return; }
+        showToast('✅ Лаунчер куплен! (демо)');
+    }
+
+    function addBalance(amount) {
+        if (!currentUser) { showToast('Сначала войдите!', 'error'); return; }
+        if (currentUser.role === 'admin') { showToast('У админов бесконечный баланс', 'error'); return; }
+        currentUser.balance += amount;
+        showToast('✅ Баланс пополнен на ' + amount + ' ₽');
+        updateUI();
+    }
+
+    // ===== УВЕДОМЛЕНИЯ =====
+    function showToast(msg, type = 'success') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast';
+        if (type === 'error') t.classList.add('error');
+        t.classList.remove('hidden');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+
+    // ===== ENTER =====
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !document.getElementById('page-login').classList.contains('hidden')) {
+            login();
+        }
+    });
+
+    // ===== СТАРТ =====
+    showPage('main');
+</script>
+
+</body>
+</html>
