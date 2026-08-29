@@ -57,24 +57,53 @@
         .btn {
             display: inline-block;
             padding: 16px 50px;
-            background: #7b3fbf;
-            color: #fff;
+            background: #3d2b5e;
+            color: #7b5f9f;
             border: none;
             border-radius: 12px;
             font-size: 20px;
             font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
+            cursor: not-allowed;
             text-decoration: none;
             width: 100%;
+            opacity: 0.5;
         }
-        .btn:hover {
-            background: #9b5fd9;
-            transform: scale(1.03);
-            box-shadow: 0 0 30px rgba(123, 63, 191, 0.5);
+        .btn-lock {
+            display: inline-block;
+            padding: 16px 50px;
+            background: #3d2b5e;
+            color: #7b5f9f;
+            border: 2px solid #5b3f7f;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: not-allowed;
+            text-decoration: none;
+            width: 100%;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .btn-lock::after {
+            content: " 🔒";
+            color: #7b5f9f;
+        }
+        .dev-note {
+            margin-top: 10px;
+            color: #f39c12;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .dev-note span {
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
         #msg {
-            margin-top: 15px;
+            margin-top: 10px;
             color: #a78bfa;
             font-size: 14px;
             min-height: 20px;
@@ -125,7 +154,9 @@
             <span>🧪 BETA TEST</span>
         </div>
 
-        <a href="#" class="btn" onclick="install()">📥 Установить</a>
+        <!-- ЗАБЛОКИРОВАННАЯ КНОПКА -->
+        <div class="btn-lock">📥 Установить</div>
+        <div class="dev-note"><span>⏳ В разработке...</span></div>
 
         <div id="msg"></div>
 
@@ -142,9 +173,7 @@
     <div class="footer">© 2026 CRASH DLC</div>
 
     <script>
-        function install() {
-            document.getElementById('msg').textContent = '✅ Установка началась...';
-        }
+        // Кнопка заблокирована, ничего не делает
     </script>
 </body>
 </html>
