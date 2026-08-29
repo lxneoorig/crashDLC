@@ -10,7 +10,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background: #0a0a12;
             color: #fff;
             min-height: 100vh;
@@ -23,9 +23,6 @@
             align-items: center;
             border-bottom: 2px solid #ff6b35;
             flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
         .logo {
             font-size: 24px;
@@ -85,15 +82,10 @@
             padding: 30px;
             margin-bottom: 25px;
             border: 1px solid #2a2a3e;
-            transition: 0.3s;
-        }
-        .card:hover {
-            border-color: rgba(255,107,53,0.2);
         }
         .card h2 {
             color: #ff6b35;
             margin-bottom: 15px;
-            font-size: 24px;
         }
         .card p {
             color: #aaa;
@@ -122,12 +114,6 @@
         .btn-green:hover {
             background: #27ae60;
         }
-        .btn-red {
-            background: #e74c3c;
-        }
-        .btn-red:hover {
-            background: #c0392b;
-        }
         .btn-gold {
             background: linear-gradient(135deg, #f39c12, #e67e22);
         }
@@ -137,7 +123,6 @@
         .btn-block {
             display: block;
             width: 100%;
-            text-align: center;
         }
         .btn-group {
             display: flex;
@@ -248,9 +233,6 @@
             font-weight: 700;
             font-size: 18px;
         }
-        .balance-negative {
-            color: #e74c3c;
-        }
         .product {
             background: #0a0a12;
             padding: 20px;
@@ -261,10 +243,6 @@
             flex-wrap: wrap;
             margin-bottom: 12px;
             border: 1px solid #2a2a3e;
-            transition: 0.3s;
-        }
-        .product:hover {
-            border-color: #ff6b35;
         }
         .product .info h3 {
             color: #fff;
@@ -294,14 +272,13 @@
             color: #666;
             font-size: 12px;
         }
-        .history-item .amount {
-            font-weight: 700;
-        }
         .history-item .amount.plus {
             color: #2ecc71;
+            font-weight: 700;
         }
         .history-item .amount.minus {
             color: #e74c3c;
+            font-weight: 700;
         }
         .history-item .desc {
             color: #aaa;
@@ -331,11 +308,17 @@
         .license-active {
             background: rgba(46,204,113,0.1);
             border: 1px solid rgba(46,204,113,0.2);
-            padding: 8px 16px;
+            padding: 4px 16px;
             border-radius: 8px;
             color: #2ecc71;
             font-weight: 600;
             display: inline-block;
+            font-size: 13px;
+        }
+        #loginMsg {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -466,7 +449,7 @@
             </div>
             <button onclick="login()" class="btn btn-block">Войти</button>
             <br>
-            <p id="loginMsg" style="text-align:center;"></p>
+            <p id="loginMsg"></p>
         </div>
     </div>
 
@@ -510,30 +493,31 @@
 <!-- ===== JAVASCRIPT ===== -->
 <script>
     // ===== ПОЛЬЗОВАТЕЛИ =====
-    const ADMINS = ['lxneo', 'fridiz'];
-    const USERS = [
-        { name: 'lxneo', password: '1234', role: 'admin', balance: 999999, license: true },
-        { name: 'fridiz', password: '1234', role: 'admin', balance: 999999, license: true },
-        { name: 'user1', password: '1234', role: 'user', balance: 500, license: false },
-        { name: 'user2', password: '1234', role: 'user', balance: 0, license: false }
-    ];
-
+    let USERS = [];
     let currentUser = null;
 
     // ===== ЗАГРУЗКА И СОХРАНЕНИЕ =====
+    function loadUsers() {
+        const data = localStorage.getItem('users');
+        if (data) {
+            USERS = JSON.parse(data);
+        } else {
+            USERS = [
+                { name: 'lxneo', password: '1234', role: 'admin', balance: 999999, license: true, history: [] },
+                { name: 'fridiz', password: '1234', role: 'admin', balance: 999999, license: true, history: [] },
+                { name: 'user1', password: '1234', role: 'user', balance: 500, license: false, history: [] },
+                { name: 'user2', password: '1234', role: 'user', balance: 0, license: false, history: [] }
+            ];
+            saveUsers();
+        }
+    }
+
     function saveUsers() {
         localStorage.setItem('users', JSON.stringify(USERS));
     }
 
-    function loadUsers() {
-        const data = localStorage.getItem('users');
-        if (data) {
-            const parsed = JSON.parse(data);
-            USERS.length = 0;
-            parsed.forEach(u => USERS.push(u));
-        } else {
-            saveUsers();
-        }
+    function findUser(name) {
+        return USERS.find(u => u.name.toLowerCase() === name.toLowerCase());
     }
 
     // ===== ПОКАЗАТЬ СТРАНИЦУ =====
@@ -543,17 +527,6 @@
         });
         const target = document.getElementById('page-' + page);
         if (target) target.classList.remove('hidden');
-
-        document.querySelectorAll('nav a').forEach(a => a.classList.remove('nav-login'));
-        const navMap = {
-            'main': 'navMain',
-            'shop': 'navShop',
-            'community': 'navCommunity',
-            'login': 'navLogin',
-            'profile': 'navProfile'
-        };
-        const navEl = document.getElementById(navMap[page]);
-        if (navEl) navEl.classList.add('nav-login');
 
         if (page === 'profile') {
             updateProfile();
@@ -578,11 +551,10 @@
             return;
         }
 
-        const loginLower = loginInput.toLowerCase();
         loadUsers();
-        const found = USERS.find(u => u.name === loginLower && u.password === passInput);
+        const found = findUser(loginInput);
 
-        if (found) {
+        if (found && found.password === passInput) {
             currentUser = found;
             msg.textContent = '✅ Вход выполнен!';
             msg.style.color = '#2ecc71';
@@ -607,10 +579,26 @@
     function updateUI() {
         const isLoggedIn = currentUser !== null;
 
-        document.getElementById('navLogin').classList.toggle('hidden', isLoggedIn);
-        document.getElementById('navLogout').classList.toggle('hidden', !isLoggedIn);
-        document.getElementById('navProfile').classList.toggle('hidden', !isLoggedIn);
-        document.getElementById('navShop').classList.toggle('hidden', !isLoggedIn);
-        document.getElementById('balanceDisplay').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('navLogin').style.display = isLoggedIn ? 'none' : '';
+        document.getElementById('navLogout').style.display = isLoggedIn ? '' : 'none';
+        document.getElementById('navProfile').style.display = isLoggedIn ? '' : 'none';
+        document.getElementById('navShop').style.display = isLoggedIn ? '' : 'none';
+        document.getElementById('balanceDisplay').style.display = isLoggedIn ? '' : 'none';
 
-        if 
+        if (isLoggedIn) {
+            const isAdmin = currentUser.role === 'admin';
+            const bal = isAdmin ? '♾' : currentUser.balance + ' ₽';
+            document.getElementById('balanceDisplay').textContent = '💰 ' + bal;
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+            const roleEl = document.getElementById('profileRole');
+            if (isAdmin) {
+                roleEl.textContent = '👑 Администратор';
+                roleEl.style.color = '#ff6b35';
+            } else {
+                roleEl.textContent = '🎮 Игрок';
+                roleEl.style.color = '#888';
+            }
+
+            const balanceEl = document.getElementById('profileBalance'
