@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crash DLC — Лаунчер</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #0b0e14;
+            color: #fff;
+            min-height: 100vh;
+        }
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+        header {
+            background: #141a24;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e94560;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #e94560;
+            text-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+        }
+        .logo span {
+            color: #fff;
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        nav a {
+            padding: 8px 18px;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        nav a:hover {
+            background: #e94560;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: #141a24;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #2a3344;
+        }
+        .card h2 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            color: #e94560;
+        }
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background: #e94560;
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+        }
+        .btn:hover {
+            background: #c73652;
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.4);
+            transform: scale(1.02);
+        }
+        .btn-green {
+            background: #2ecc71;
+        }
+        .btn-green:hover {
+            background: #27ae60;
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.4);
+        }
+        .btn-blue {
+            background: #3498db;
+        }
+        .btn-blue:hover {
+            background: #2980b9;
+            box-shadow: 0 0 30px rgba(52, 152, 219, 0.4);
+        }
+        .btn-orange {
+            background: #f39c12;
+        }
+        .btn-orange:hover {
+            background: #e67e22;
+            box-shadow: 0 0 30px rgba(243, 156, 18, 0.4);
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+            font-weight: 600;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid #2a3344;
+            background: #0f151e;
+            color: #fff;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .form-group input:focus {
+            border-color: #e94560;
+            outline: none;
+            box-shadow: 0 0 15px rgba(233, 69, 96, 0.2);
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .form-row .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            background: #2ecc71;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            z-index: 999;
+            animation: slideUp 0.4s ease;
+        }
+        .toast.error {
+            background: #e74c3c;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+        .user-list li {
+            padding: 12px 15px;
+            background: #0f151e;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .user-list .role {
+            font-size: 12px;
+            padding: 3px 12px;
+            border-radius: 40px;
+            background: #2a3344;
+        }
+        .user-list .role.admin {
+            background: #e94560;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #e94560;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 700;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #555;
+            border-top: 1px solid #1a1a2e;
+            margin-top: 30px;
+        }
+        .admin-badge {
+            background: #e94560;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            nav {
+                justify-content: center;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">CRASH <span>DLC</span></div>
+    <nav>
+        <a onclick="showPage('main')">🏠 Главная</a>
+        <a onclick="showPage('launcher')">📥 Лаунчер</a>
+        <a onclick="showPage('community')">💬 Сообщество</a>
+        <a onclick="showPage('profile')" id="profileLink" class="hidden">👤 Профиль</a>
+        <a onclick="showPage('login')" id="loginLink">🔑 Войти</a>
+        <a onclick="logout()" id="logoutLink" class="hidden">🚪 Выйти</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div id="page-main">
+        <div class="card">
+            <h1 style="font-size: 3em; color: #e94560;">CRASH DLC</h1>
+            <p style="font-size: 1.2em; color: #aaa;">Мощный Minecraft клиент для профессионалов</p>
+            <br>
+            <div class="btn-group">
+                <a onclick="showPage('launcher')" class="btn btn-block">⬇ Скачать лаунчер</a>
+                <a onclick="showPage('community')" class="btn btn-blue btn-block">💬 Сообщество</a>
+            </div>
+        </div>
+        <div class="card">
+            <h2>🔥 Особенности</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 10px 0; border-bottom: 1px solid #1a1a2e;">✅ Автокликер с настройкой</li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #1a1a2e;">✅ Автофарм ресурсов</li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #1a1a2e;">✅ X-Ray без банов</li>
+                <li style="padding: 10px 0; border-bottom: 1px solid #1a1a2e;">✅ Fly / Speed / NoFall</li>
+                <li style="padding: 10px 0;">✅ ScreenShare защита</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="page-launcher" class="hidden">
+        <div class="card">
+            <h2>📥 Скачать лаунчер</h2>
+            <p>Выберите версию для скачивания:</p>
+            <br>
+            <div class="btn-group">
+                <a href="#" class="btn btn-block">⬇ Windows (exe)</a>
+                <a href="#" class="btn btn-green btn-block">⬇ macOS (dmg)</a>
+                <a href="#" class="btn btn-blue btn-block">⬇ Linux (AppImage)</a>
+            </div>
+            <br>
+            <p style="color: #666; font-size: 0.9em;">Последняя версия: v2.5.0 • 27 августа 2026</p>
+        </div>
+        <div class="card">
+            <h2>📋 Инструкция</h2>
+            <ol style="padding-left: 20px; color: #aaa; line-height: 2;">
+                <li>Скачай лаунчер под свою ОС</li>
+                <li>Запусти файл и установи</li>
+                <li>Введи свой логин и пароль</li>
+                <li>Нажми "Играть" и наслаждайся!</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="page-community" class="hidden">
+        <div class="card">
+            <h2>💬 Сообщество</h2>
+            <p>Присоединяйся к нам в соцсетях и общайся с другими игроками!</p>
+            <br>
+            <div class="btn-group">
+                <a href="#" class="btn btn-blue btn-block">📱 Discord</a>
+                <a href="#" class="btn btn-orange btn-block">📸 Telegram</a>
+                <a href="#" class="btn btn-green btn-block">🐦 Twitter / X</a>
+            </div>
+        </div>
+        <div class="card">
+            <h2>📢 Новости</h2>
+            <div style="background: #0f151e; padding: 15px; border-radius: 12px; margin-bottom: 10px;">
+                <strong>Обновление v2.5.0</strong>
+                <p style="color: #888; font-size: 0.9em;">Добавлена защита от ScreenShare, улучшен анти-бан</p>
+            </div>
+            <div style="background: #0f151e; padding: 15px; border-radius: 12px;">
+                <strong>Скоро: турнир</strong>
+                <p style="color: #888; font-size: 0.9em;">Регистрация открыта до 10 сентября</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-login" class="hidden">
+        <div class="card">
+            <h2>🔑 Вход</h2>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Логин</label>
+                    <input type="text" id="loginUsername" placeholder="Введите логин" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="loginPassword" placeholder="Введите пароль" required>
+                </div>
+                <button type="submit" class="btn btn-block">Войти</button>
+            </form>
+            <br>
+            <p style="text-align: center; color: #888;">
+                Нет аккаунта? <a onclick="showRegister()" style="color: #e94560; cursor:pointer;">Зарегистрируйся</a>
+            </p>
+        </div>
+        <div id="registerBlock" class="hidden">
+            <div class="card">
+                <h2>📝 Регистрация</h2>
+                <form onsubmit="register(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Логин</label>
+                            <input type="text" id="regUsername" placeholder="Придумай логин" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль</label>
+                            <input type="password" id="regPassword" placeholder="Придумай пароль" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Повтори пароль</label>
+                        <input type="password" id="regPassword2" placeholder="Повтори пароль" required>
+                    </div>
+                    <button type="submit" class="btn btn-green btn-block">Зарегистрироваться</button>
+                </form>
+                <br>
+                <p style="text-align: center; color: #888;">
+                    Уже есть аккаунт? <a onclick="showLogin()" style="color: #e94560; cursor:pointer;">Войти</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-profile" class="hidden">
+        <div class="card">
+            <div class="profile-header">
+                <div class="avatar" id="profileAvatar">L</div>
+                <div>
+                    <h2 id="profileName">Логин</h2>
+                    <p style="color: #888;" id="profileRole">Роль: игрок</p>
+                </div>
+            </div>
+        </div>
+        <div id="adminPanel" class="hidden">
+            <div class="card" style="border-color: #e94560;">
+                <h2>👑 Админ-панель</h2>
+                <p style="color: #aaa;">Управление пользователями</p>
+                <br>
+                <ul class="user-list" id="userList">
+                    <li><span>admin</span><span class="role admin">Админ</span></li>
+                    <li><span>user1</span><span class="role">Игрок</span></li>
+                    <li><span>user2</span><span class="role">Игрок</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Crash DLC. Все права защищены.
+</footer>
+
+<div id="toast" class="hidden toast"></div>
+
+<script>
+    function showPage(page) {
+        document.querySelectorAll('[id^="page-"]').forEach(el => {
+            el.classList.add('hidden');
+        });
+        const target = document.getElementById('page-' + page);
+        if (target) target.classList.remove('hidden');
+        if (page === 'profile') checkAdmin();
+    }
+
+    function showRegister() {
+        document.getElementById('registerBlock').classList.remove('hidden');
+        document.querySelector('#page-login .card').style.display = 'none';
+    }
+    function showLogin() {
+        document.getElementById('registerBlock').classList.add('hidden');
+        document.querySelector('#page-login .card').style.display = 'block';
+    }
+
+    function login(e) {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        if (username === 'admin' && password === '1234') {
+            localStorage.setItem('user', JSON.stringify({ name: 'admin', role: 'admin' }));
+            showToast('✅ Добро пожаловать, админ!');
+            updateUI();
+            showPage('profile');
+        } else if (localStorage.getItem('users')) {
+            const users = JSON.parse(localStorage.getItem('users'));
+            const found = users.find(u => u.name === username && u.password === password);
+            if (found) {
+                localStorage.setItem('user', JSON.stringify({ name: found.name, role: found.role || 'user' }));
+                showToast('✅ Добро пожаловать, ' + found.name + '!');
+                updateUI();
+                showPage('profile');
+            } else {
+                showToast('❌ Неверный логин или пароль', 'error');
+            }
+        } else {
+            showToast('❌ Пользователь не найден. Зарегистрируйся!', 'error');
+        }
+    }
+
+    function register(e) {
+        e.preventDefault();
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const password2 = document.getElementById('regPassword2').value;
+
+        if (password !== password2) {
+            showToast('❌ Пароли не совпадают!', 'error');
+            return;
+        }
+        if (username.length < 3) {
+            showToast('❌ Логин должен быть минимум 3 символа', 'error');
+            return;
+        }
+        if (password.length < 4) {
+            showToast('❌ Пароль должен быть минимум 4 символа', 'error');
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        if (users.find(u => u.name === username)) {
+            showToast('❌ Пользователь с таким логином уже есть!', 'error');
+            return;
+        }
+
+        users.push({ name: username, password: password, role: 'user' });
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('user', JSON.stringify({ name: username, role: 'user' }));
+        showToast('✅ Регистрация успешна! Добро пожаловать, ' + username + '!');
+        updateUI();
+        showPage('profile');
+    }
+
+    function logout() {
+        localStorage.removeItem('user');
+        showToast('👋 Ты вышел из аккаунта');
+        updateUI();
+        showPage('main');
+    }
+
+    function updateUI() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const loginLink = document.getElementById('loginLink');
+        const logoutLink = document.getElementById('logoutLink');
+        const profileLink = document.getElementById('profileLink');
+
+        if (user) {
+            loginLink.classList.add('hidden');
+            logoutLink.classList.remove('hidden');
+            profileLink.classList.remove('hidden');
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profileAvatar').textContent = user.name.charAt(0).toUpperCase();
+            document.getElementById('profileRole').textContent = 'Роль: ' + (user.role === 'admin' ? '👑 Админ' : '🎮 Игрок');
+        } else {
+            loginLink.classList.remove('hidden');
+            logoutLink.classList.add('hidden');
+            profileLink.classList.add('hidden');
+        }
+        checkAdmin();
+    }
+
+    function checkAdmin() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const adminPanel = document.getElementById('adminPanel');
+        if (user && user.role === 'admin') {
+            adminPanel.classList.remove('hidden');
+        } else {
+            adminPanel.classList.add('hidden');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast';
+        if (type === 'error') toast.classList.add('error');
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateUI();
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            showPage('profile');
+        } else {
+            showPage('main');
+        }
+    });
+</script>
+
+</body>
+                  </html>
