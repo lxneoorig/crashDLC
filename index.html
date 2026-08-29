@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Crash DLC</title>
+    <style>
+        /* ===== ОБЩИЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #0a0a12;
+            color: #fff;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 20% 50%, #1a0a2e 0%, #0a0a12 70%);
+        }
+        a {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            background: rgba(20, 26, 36, 0.95);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e94560;
+            flex-wrap: wrap;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(233, 69, 96, 0.15);
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #e94560, #ff6b81);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            text-shadow: 0 0 40px rgba(233, 69, 96, 0.2);
+        }
+        .logo span {
+            -webkit-text-fill-color: #fff;
+            font-weight: 300;
+        }
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        nav a {
+            padding: 8px 18px;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+        }
+        nav a:hover {
+            background: rgba(233, 69, 96, 0.2);
+            transform: translateY(-1px);
+        }
+        nav a.active {
+            background: #e94560;
+            box-shadow: 0 0 25px rgba(233, 69, 96, 0.3);
+        }
+        .nav-login {
+            background: #e94560;
+            border-radius: 30px;
+            padding: 8px 24px;
+        }
+        .nav-login:hover {
+            background: #ff6b81 !important;
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.4);
+        }
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(233, 69, 96, 0.15);
+            border-radius: 30px;
+            padding: 4px 8px 4px 16px;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+        }
+        .nav-user .mini-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e94560;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* ===== КОНТЕЙНЕР ===== */
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* ===== КАРТОЧКИ ===== */
+        .card {
+            background: rgba(20, 26, 36, 0.85);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(42, 51, 68, 0.5);
+            backdrop-filter: blur(8px);
+            transition: 0.3s;
+        }
+        .card:hover {
+            border-color: rgba(233, 69, 96, 0.3);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+        .card h2 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #e94560, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card p {
+            color: #bbb;
+            line-height: 1.7;
+        }
+
+        /* ===== КНОПКИ ===== */
+        .btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #e94560, #c73652);
+            color: #fff;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.2);
+        }
+        .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 40px rgba(233, 69, 96, 0.4);
+        }
+        .btn-green {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0 4px 20px rgba(46, 204, 113, 0.2);
+        }
+        .btn-green:hover {
+            box-shadow: 0 8px 40px rgba(46, 204, 113, 0.4);
+        }
+        .btn-blue {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            box-shadow: 0 4px 20px rgba(52, 152, 219, 0.2);
+        }
+        .btn-blue:hover {
+            box-shadow: 0 8px 40px rgba(52, 152, 219, 0.4);
+        }
+        .btn-orange {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            box-shadow: 0 4px 20px rgba(243, 156, 18, 0.2);
+        }
+        .btn-orange:hover {
+            box-shadow: 0 8px 40px rgba(243, 156, 18, 0.4);
+        }
+        .btn-purple {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            box-shadow: 0 4px 20px rgba(155, 89, 182, 0.2);
+        }
+        .btn-purple:hover {
+            box-shadow: 0 8px 40px rgba(155, 89, 182, 0.4);
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        /* ===== ФОРМЫ ===== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #ccc;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 1px solid #2a3344;
+            background: rgba(15, 21, 30, 0.8);
+            color: #fff;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .form-group input:focus {
+            border-color: #e94560;
+            outline: none;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.15);
+        }
+        .form-group input::placeholder {
+            color: #555;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .form-row .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* ===== СКРЫТЫЕ ЭЛЕМЕНТЫ ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ===== УВЕДОМЛЕНИЯ ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 28px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 400px;
+        }
+        .toast.error {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== ПОЛЬЗОВАТЕЛИ (админ-панель) ===== */
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+        .user-list li {
+            padding: 14px 18px;
+            background: rgba(15, 21, 30, 0.6);
+            border-radius: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid rgba(42, 51, 68, 0.3);
+            transition: 0.3s;
+        }
+        .user-list li:hover {
+            border-color: rgba(233, 69, 96, 0.3);
+        }
+        .user-list .role {
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 40px;
+            background: #2a3344;
+            font-weight: 600;
+        }
+        .user-list .role.admin {
+            background: linear-gradient(135deg, #e94560, #c73652);
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.2);
+        }
+        .user-list .user-avatar-sm {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #2a3344;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .user-list .user-avatar-sm.admin-avatar {
+            background: #e94560;
+        }
+
+        /* ===== ПРОФИЛЬ ===== */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e94560, #f39c12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 800;
+            box-shadow: 0 0 40px rgba(233, 69, 96, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .profile-role {
+            color: #888;
+            font-size: 16px;
+        }
+        .profile-role.admin-text {
+            color: #e94560;
+        }
+
+        /* ===== АДМИН-БЭЙДЖ ===== */
+        .admin-badge {
+            background: linear-gradient(135deg, #e94560, #c73652);
+            padding: 3px 14px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            margin-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #444;
+            border-top: 1px solid rgba(26, 26, 46, 0.5);
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 700px) {
+            header {
+                flex-direction: column;
+                gap: 12px;
+                padding: 12px 15px;
+            }
+            nav {
+                justify-content: center;
+                gap: 5px;
+            }
+            nav a {
+                font-size: 12px;
+                padding: 6px 14px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            .form-row {
+                flex-direction: column;
+            }
+            .card {
+                padding: 20px;
+            }
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* ===== СПИСОК ОСОБЕННОСТЕЙ ===== */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(42, 51, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ccc;
+        }
+        .feature-list li:last-child {
+            border: none;
+        }
+        .feature-list li::before {
+            content: "⚡";
+            font-size: 18px;
+            color: #e94560;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== ШАПКА ===== -->
+<header>
+    <div class="logo">CRASH<span>DLC</span></div>
+    <nav>
+        <a onclick="showPage('main')" id="navMain" class="active">🏠 Главная</a>
+        <a onclick="showPage('launcher')" id="navLauncher" class="hidden">📥 Лаунчер</a>
+        <a onclick="showPage('community')" id="navCommunity">💬 Сообщество</a>
+        <a onclick="showPage('profile')" id="navProfile" class="hidden">👤 Профиль</a>
+        <a onclick="showPage('login')" id="navLogin" class="nav-login">🔑 Вход</a>
+        <a onclick="logout()" id="navLogout" class="hidden">🚪 Выйти</a>
+    </nav>
+</header>
+
+<!-- ===== КОНТЕЙНЕР ===== -->
+<div class="container">
+
+    <!-- ===== ГЛАВНАЯ ===== -->
+    <div id="page-main">
+        <div class="card" style="text-align: center; padding: 50px;">
+            <h1 style="font-size: 4em; background: linear-gradient(135deg, #e94560, #f39c12); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CRASH DLC</h1>
+            <p style="font-size: 1.3em; color: #aaa; margin-top: 10px;">⚔️ Мощный Minecraft клиент для профессионалов</p>
+            <div style="margin: 25px auto; max-width: 400px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                    <span style="background: rgba(233,69,96,0.15); padding: 6px 16px; border-radius: 40px; font-size: 13px; border: 1px solid rgba(233,69,96,0.2);">🔒 Анти-бан</span>
+                    <span style="background: rgba(46,204,113,0.15); padding: 6px 16px; border-radius: 40px; font-size: 13px; border: 1px solid rgba(46,204,113,0.2);">⚡ Автофарм</span>
+                    <span style="background: rgba(52,152,219,0.15); padding: 6px 16px; border-radius: 40px; font-size: 13px; border: 1px solid rgba(52,152,219,0.2);">🛡 ScreenShare</span>
+                </div>
+            </div>
+            <div class="btn-group" style="justify-content: center; max-width: 400px; margin: 0 auto;">
+                <a onclick="showPage('login')" class="btn btn-block">🚀 Начать</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔥 Особенности</h2>
+            <ul class="feature-list">
+                <li>Автокликер (LMB / RMB) с настройкой задержки</li>
+                <li>Автофарм ресурсов и мобов</li>
+                <li>X-Ray через пакеты (без банов)</li>
+                <li>Fly / Speed / NoFall</li>
+                <li>Анти-бан система (подбор рандомных задержек)</li>
+                <li>Скрытный режим (ScreenShare защита)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ===== ЛАУНЧЕР ===== -->
+    <div id="page-launcher" class="hidden">
+        <div class="card">
+            <h2>📥 Скачать лаунчер</h2>
+            <p>Выберите версию для скачивания:</p>
+            <br />
+            <div class="btn-group">
+                <a href="#" class="btn btn-block">⬇ Windows (exe)</a>
+                <a href="#" class="btn btn-green btn-block">⬇ macOS (dmg)</a>
+                <a href="#" class="btn btn-blue btn-block">⬇ Linux (AppImage)</a>
+            </div>
+            <br />
+            <p style="color: #666; font-size: 0.9em;">Последняя версия: v2.5.0 • 27 августа 2026</p>
+        </div>
+
+        <div class="card">
+            <h2>📋 Инструкция</h2>
+            <ol style="padding-left: 20px; color: #aaa; line-height: 2.2;">
+                <li>Скачай лаунчер под свою ОС</li>
+                <li>Запусти файл и установи</li>
+                <li>Введи свой логин и пароль</li>
+                <li>Нажми "Играть" и наслаждайся!</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ===== СООБЩЕСТВО ===== -->
+    <div id="page-community">
+        <div class="card">
+            <h2>💬 Сообщество</h2>
+            <p>Присоединяйся к нам в соцсетях и общайся с другими игроками!</p>
+            <br />
+            <div class="btn-group">
+                <a href="#" class="btn btn-blue btn-block">📱 Discord</a>
+                <a href="#" class="btn btn-orange btn-block">📸 Telegram</a>
+                <a href="#" class="btn btn-purple btn-block">🐦 Twitter / X</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📢 Новости</h2>
+            <div style="background: rgba(15,21,30,0.5); padding: 16px 20px; border-radius: 14px; margin-bottom: 12px; border-left: 3px solid #e94560;">
+                <strong style="color:#fff;">Обновление v2.5.0</strong>
+                <p style="color: #888; font-size: 0.9em; margin-top: 4px;">Добавлена защита от ScreenShare, улучшен анти-бан</p>
+            </div>
+            <div style="background: rgba(15,21,30,0.5); padding: 16px 20px; border-radius: 14px; border-left: 3px solid #f39c12;">
+                <strong style="color:#fff;">Скоро: турнир</strong>
+                <p style="color: #888; font-size: 0.9em; margin-top: 4px;">Регистрация открыта до 10 сентября</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ВХОД / РЕГИСТРАЦИЯ ===== -->
+    <div id="page-login" class="hidden">
+        <div class="card" style="max-width: 450px; margin: 0 auto;">
+            <h2 style="text-align:center; -webkit-text-fill-color: #e94560;">🔑 Вход</h2>
+            <br />
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Логин</label>
+                    <input type="text" id="loginUsername" placeholder="Введите логин" required />
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="loginPassword" placeholder="Введите пароль" required />
+                </div>
+                <button type="submit" class="btn btn-block">Войти</button>
+            </form>
+            <br />
+            <p style="text-align: center; color: #888;">
+                Нет аккаунта? <a onclick="showRegister()" style="color: #e94560; cursor:pointer; font-weight:600;">Зарегистрируйся</a>
+            </p>
+        </div>
+
+        <div id="registerBlock" class="hidden">
+            <div class="card" style="max-width: 450px; margin: 0 auto;">
+                <h2 style="text-align:center; -webkit-text-fill-color: #2ecc71;">📝 Регистрация</h2>
+                <br />
+                <form onsubmit="register(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Логин</label>
+                            <input type="text" id="regUsername" placeholder="Придумай логин" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль</label>
+                            <input type="password" id="regPassword" placeholder="Придумай пароль" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Повтори пароль</label>
+                        <input type="password" id="regPassword2" placeholder="Повтори пароль" required />
+                    </div>
+                    <button type="submit" class="btn btn-green btn-block">Зарегистрироваться</button>
+                </form>
+                <br />
+                <p style="text-align: center; color: #888;">
+                    Уже есть аккаунт? <a onclick="showLogin()" style="color: #e94560; cursor:pointer; font-weight:600;">Войти</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ ===== -->
+    <div id="page-profile" class="hidden">
+        <div class="card">
+            <div class="profile-header">
+                <div
