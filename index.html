@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crash DLC</title>
+    <meta charset="utf-8">
+    <style>
+        body { 
+            font-family: Arial; 
+            background: #0a0a12; 
+            color: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            flex-direction: column; 
+            margin: 0;
+        }
+        .box {
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid #333;
+            width: 300px;
+        }
+        h1 { color: #ff6b35; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #0a0a12;
+            color: white;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background: #ff8255; }
+        #msg { margin-top: 15px; font-weight: bold; }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>CRASH DLC</h1>
+    <p style="color: #888;">Войди в аккаунт</p>
+    
+    <input type="text" id="loginInput" placeholder="Логин">
+    <input type="password" id="passInput" placeholder="Пароль">
+    
+    <button onclick="login()">🔑 Войти</button>
+    
+    <div id="msg"></div>
+</div>
+
+<script>
+    // ===== СПИСОК ПОЛЬЗОВАТЕЛЕЙ =====
+    const users = [
+        { name: 'lxneo', password: '1234', role: 'admin' },
+        { name: 'fridiz', password: '1234', role: 'admin' },
+        { name: 'user1', password: '1234', role: 'user' }
+    ];
+
+    function login() {
+        const loginInput = document.getElementById('loginInput').value.trim();
+        const passInput = document.getElementById('passInput').value.trim();
+        const msg = document.getElementById('msg');
+
+        // Проверка на пустые поля
+        if (loginInput === '' || passInput === '') {
+            msg.innerHTML = '❌ Заполни все поля!';
+            msg.className = 'error';
+            return;
+        }
+
+        // Поиск пользователя
+        const found = users.find(u => u.name.toLowerCase() === loginInput.toLowerCase() && u.password === passInput);
+
+        if (found) {
+            msg.innerHTML = '✅ Привет, ' + found.name + '! (' + (found.role === 'admin' ? 'Админ' : 'Игрок') + ')';
+            msg.className = 'success';
+        } else {
+            msg.innerHTML = '❌ Неверный логин или пароль!';
+            msg.className = 'error';
+        }
+    }
+
+    // Вход по Enter
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            login();
+        }
+    });
+</script>
+
+</body>
+</html>
