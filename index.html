@@ -2,602 +2,175 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRASH DLC — как WildClient</title>
+    <title>Установка</title>
     <style>
-        /* ===== БАЗА ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #0b0e14;
+            font-family: Arial, sans-serif;
+            background: #1a0a2e;
             color: #fff;
             min-height: 100vh;
-        }
-
-        /* ===== ШАПКА ===== */
-        .header {
-            background: #141a24;
-            padding: 15px 30px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            border-bottom: 2px solid #ff6b35;
-            flex-wrap: wrap;
+            flex-direction: column;
         }
-        .logo {
-            font-size: 26px;
-            font-weight: 900;
-            color: #ff6b35;
-        }
-        .logo span {
-            color: #fff;
-        }
-        .nav {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .nav a {
-            color: #aaa;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s;
-            border: none;
-            background: none;
-        }
-        .nav a:hover {
-            color: #fff;
-            background: rgba(255, 107, 53, 0.15);
-        }
-        .nav .active {
-            color: #fff;
-            background: rgba(255, 107, 53, 0.15);
-        }
-        .nav .login-btn {
-            background: #ff6b35;
-            color: #fff;
-            padding: 8px 22px;
-            border-radius: 8px;
-        }
-        .nav .login-btn:hover {
-            background: #ff8255;
-        }
-        .hidden {
-            display: none !important;
-        }
-
-        /* ===== ОСНОВНОЙ ===== */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        /* ===== ГЛАВНАЯ ===== */
-        .hero {
+        .box {
+            background: #2d1b4e;
+            padding: 50px 40px;
+            border-radius: 20px;
             text-align: center;
-            padding: 50px 20px 30px;
+            border: 1px solid #7b3fbf;
+            box-shadow: 0 0 50px rgba(123, 63, 191, 0.3);
+            max-width: 400px;
+            width: 100%;
         }
-        .hero h1 {
-            font-size: 4em;
-            font-weight: 900;
-            color: #ff6b35;
+        h1 {
+            font-size: 36px;
+            color: #c084fc;
+            margin-bottom: 10px;
         }
-        .hero p {
-            color: #888;
-            font-size: 1.1em;
-            margin-top: 8px;
+        p {
+            color: #a78bfa;
+            font-size: 16px;
+            margin-bottom: 25px;
         }
-
-        /* ===== КНОПКИ ===== */
         .btn {
+            display: inline-block;
             padding: 14px 40px;
-            background: #ff6b35;
+            background: #7b3fbf;
             color: #fff;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
+            text-decoration: none;
+            margin: 6px 0;
+            width: 100%;
         }
         .btn:hover {
-            background: #ff8255;
-            transform: scale(1.02);
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.05);
-        }
-        .btn-block {
-            display: block;
-            width: 100%;
-            text-align: center;
+            background: #9b5fd9;
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(123, 63, 191, 0.5);
         }
         .btn-green {
             background: #2ecc71;
         }
         .btn-green:hover {
             background: #27ae60;
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.4);
         }
-        .btn-gold {
-            background: #f39c12;
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #7b3fbf;
         }
-        .btn-gold:hover {
-            background: #e67e22;
+        .btn-outline:hover {
+            background: #7b3fbf;
         }
-
-        /* ===== КАРТОЧКИ ===== */
-        .card {
-            background: #141a24;
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 20px;
-            border: 1px solid #2a2a3e;
-        }
-        .card h2 {
-            color: #ff6b35;
-            font-size: 22px;
-            margin-bottom: 12px;
-        }
-        .card p {
-            color: #aaa;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        .card .label {
-            color: #666;
+        .footer {
+            color: #5b3f7f;
             font-size: 13px;
-            margin-bottom: 4px;
+            margin-top: 20px;
         }
-
-        /* ===== ПРОФИЛЬ (как у WildClient) ===== */
-        .profile-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-        }
-        .profile-sidebar {
-            background: #141a24;
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid #2a2a3e;
-        }
-        .profile-sidebar .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: #ff6b35;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0 auto 12px;
-        }
-        .profile-sidebar .name {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 700;
-        }
-        .profile-sidebar .uid {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-        }
-        .profile-sidebar .status {
-            text-align: center;
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 8px;
-            background: rgba(46,204,113,0.1);
-            color: #2ecc71;
-            font-size: 13px;
-        }
-        .profile-sidebar .status.offline {
-            background: rgba(231,76,60,0.1);
-            color: #e74c3c;
-        }
-        .profile-sidebar .joined {
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-            margin-top: 6px;
-        }
-        .profile-sidebar .menu-item {
-            padding: 10px 14px;
-            border-radius: 8px;
-            color: #aaa;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 6px;
-        }
-        .profile-sidebar .menu-item:hover {
-            background: rgba(255,107,53,0.1);
-            color: #fff;
-        }
-        .profile-sidebar .menu-item.active {
-            background: rgba(255,107,53,0.15);
-            color: #ff6b35;
-        }
-        .profile-sidebar .logout-btn {
+        #msg {
             margin-top: 15px;
+            color: #a78bfa;
+            font-size: 14px;
+            min-height: 20px;
+        }
+        .beta-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(123, 63, 191, 0.15);
+            border-radius: 10px;
+            border: 1px dashed #7b3fbf;
+        }
+        .beta-box label {
+            color: #c084fc;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .beta-box input {
+            width: 100%;
             padding: 10px;
             border-radius: 8px;
-            background: rgba(231,76,60,0.1);
-            color: #e74c3c;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .profile-sidebar .logout-btn:hover {
-            background: rgba(231,76,60,0.2);
-        }
-        .profile-sidebar .community-stats {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #2a2a3e;
-        }
-        .profile-sidebar .community-stats .stat {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            color: #888;
+            border: 1px solid #7b3fbf;
+            background: #1a0a2e;
+            color: #fff;
             font-size: 14px;
+            text-align: center;
         }
-        .profile-sidebar .community-stats .stat .count {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        /* ===== ОСНОВНОЙ КОНТЕНТ ПРОФИЛЯ ===== */
-        .profile-content {
-            background: #141a24;
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid #2a2a3e;
-        }
-        .profile-content .tab {
-            display: none;
-        }
-        .profile-content .tab.active {
-            display: block;
-        }
-
-        /* ===== КЛЮЧ АКТИВАЦИИ ===== */
-        .key-input {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .key-input input {
-            flex: 1;
-            padding: 14px 18px;
-            border-radius: 8px;
-            border: 1px solid #2a2a3e;
-            background: #0a0a12;
-            color: #fff;
-            font-size: 16px;
-            font-family: monospace;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            min-width: 200px;
-        }
-        .key-input input:focus {
-            border-color: #ff6b35;
+        .beta-box input:focus {
             outline: none;
+            border-color: #c084fc;
         }
-        .key-input button {
-            padding: 14px 30px;
+        .status {
+            margin-top: 10px;
+            font-size: 13px;
         }
-
-        /* ===== ТАРИФЫ ===== */
-        .tariff {
-            background: #0a0a12;
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid #ff6b35;
-            text-align: center;
-            max-width: 400px;
-        }
-        .tariff .badge {
-            background: #ff6b35;
-            padding: 4px 16px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        .tariff .price {
-            font-size: 36px;
-            font-weight: 900;
-            color: #ff6b35;
-        }
-        .tariff .price span {
-            font-size: 16px;
-            color: #888;
-            font-weight: 400;
-        }
-        .tariff .features {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0;
-            text-align: left;
-        }
-        .tariff .features li {
-            padding: 6px 0;
-            color: #aaa;
-            font-size: 14px;
-        }
-        .tariff .features li::before {
-            content: "✅ ";
+        .status .online {
             color: #2ecc71;
         }
-        .tariff .note {
+        .status .offline {
             color: #e74c3c;
-            font-size: 13px;
-            margin: 10px 0;
-        }
-
-        /* ===== ПОДПИСКИ ===== */
-        .subscription-box {
-            background: #0a0a12;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #2a2a3e;
-        }
-        .subscription-box .no-sub {
-            color: #666;
-            font-size: 16px;
-        }
-        .subscription-box .no-sub .icon {
-            font-size: 40px;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* ===== ТОСТ ===== */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 14px 28px;
-            border-radius: 12px;
-            background: #2ecc71;
-            color: #fff;
-            font-weight: 500;
-            z-index: 999;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s ease;
-        }
-        .toast.error {
-            background: #e74c3c;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== ПОДВАЛ ===== */
-        .footer {
-            text-align: center;
-            padding: 30px;
-            color: #444;
-            border-top: 1px solid #1a1a2e;
-            margin-top: 30px;
-        }
-
-        /* ===== АДАПТИВ ===== */
-        @media (max-width: 700px) {
-            .header {
-                padding: 12px 20px;
-                flex-direction: column;
-                gap: 10px;
-            }
-            .nav {
-                justify-content: center;
-            }
-            .hero h1 {
-                font-size: 2.8em;
-            }
-            .profile-grid {
-                grid-template-columns: 1fr;
-            }
-            .key-input {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-            .tariff {
-                max-width: 100%;
-            }
         }
     </style>
 </head>
 <body>
+    <div class="box">
+        <h1>🚀 CRASH DLC</h1>
+        <p>Установи клиент и участвуй в бета-тесте</p>
 
-<!-- ===== ШАПКА ===== -->
-<div class="header">
-    <div class="logo">CRASH<span>DLC</span></div>
-    <div class="nav">
-        <a onclick="showPage('main')" id="navMain" class="active">Главная</a>
-        <a onclick="showPage('profile')" id="navProfile" class="hidden">Профиль</a>
-        <a onclick="showPage('login')" id="navLogin" class="login-btn">Вход</a>
-        <a onclick="logout()" id="navLogout" class="hidden">Выйти</a>
-    </div>
-</div>
+        <!-- КНОПКА УСТАНОВКИ -->
+        <a href="#" class="btn" onclick="install()">📥 Установить</a>
 
-<!-- ===== КОНТЕЙНЕР ===== -->
-<div class="container">
-
-    <!-- ===== ГЛАВНАЯ ===== -->
-    <div id="page-main">
-        <div class="hero">
-            <h1>CRASH DLC</h1>
-            <p>Эффективный клиент для Minecraft</p>
-            <br>
-            <button onclick="showPage('login')" class="btn">🚀 Начать</button>
+        <!-- БЕТА-ТЕСТ -->
+        <div class="beta-box">
+            <label>🔬 Бета-тест</label>
+            <input type="text" id="betaCode" placeholder="Введи код бета-теста">
+            <button onclick="betaTest()" class="btn btn-green" style="margin-top:8px;">✅ Активировать бета</button>
+            <div id="betaMsg" style="color:#a78bfa; font-size:13px; margin-top:6px;"></div>
         </div>
-        <div class="card">
-            <h2>🔥 Особенности</h2>
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
-                <div style="color:#aaa; padding:6px 0;">✅ Автокликер</div>
-                <div style="color:#aaa; padding:6px 0;">✅ Автофарм</div>
-                <div style="color:#aaa; padding:6px 0;">✅ X-Ray</div>
-                <div style="color:#aaa; padding:6px 0;">✅ Fly / Speed</div>
-                <div style="color:#aaa; padding:6px 0;">✅ Анти-бан</div>
-                <div style="color:#aaa; padding:6px 0;">✅ ScreenShare</div>
-            </div>
+
+        <div id="msg"></div>
+
+        <div class="status">
+            <span class="online">●</span> Сервер: <span class="online">онлайн</span>
         </div>
     </div>
 
-    <!-- ===== ВХОД ===== -->
-    <div id="page-login" class="hidden">
-        <div class="card" style="max-width:400px; margin:0 auto;">
-            <h2 style="text-align:center;">🔑 Вход</h2>
-            <br>
-            <label style="color:#aaa; display:block; margin-bottom:4px;">Логин</label>
-            <input type="text" id="loginInput" placeholder="Введите логин" style="width:100%; padding:12px 16px; border-radius:8px; border:1px solid #2a2a3e; background:#0a0a12; color:#fff; font-size:15px; margin-bottom:12px;">
-            <label style="color:#aaa; display:block; margin-bottom:4px;">Пароль</label>
-            <input type="password" id="passInput" placeholder="Введите пароль" style="width:100%; padding:12px 16px; border-radius:8px; border:1px solid #2a2a3e; background:#0a0a12; color:#fff; font-size:15px; margin-bottom:12px;">
-            <button onclick="login()" class="btn btn-block">Войти</button>
-            <div id="loginMsg" style="text-align:center; margin-top:12px; font-weight:bold;"></div>
-        </div>
-    </div>
+    <div class="footer">© 2026 CRASH DLC</div>
 
-    <!-- ===== ПРОФИЛЬ (как у WildClient) ===== -->
-    <div id="page-profile" class="hidden">
-        <div class="profile-grid">
+    <script>
+        function install() {
+            document.getElementById('msg').textContent = '✅ Установка началась...';
+        }
 
-            <!-- ===== ЛЕВАЯ ПАНЕЛЬ ===== -->
-            <div class="profile-sidebar">
-                <div class="avatar" id="profileAvatar">L</div>
-                <div class="name" id="profileName">Логин</div>
-                <div class="uid" id="profileUID">UID 00000</div>
-                <div class="status" id="profileStatus">● В сети</div>
-                <div class="joined" id="profileJoined">На платформе с 29 августа 2026 г.</div>
+        function betaTest() {
+            const code = document.getElementById('betaCode').value.trim();
+            const msg = document.getElementById('betaMsg');
 
-                <div class="menu-item active" onclick="showProfileTab('profile')">📋 Профиль</div>
-                <div class="menu-item" onclick="showProfileTab('subscriptions')">📦 Подписки</div>
-                <div class="menu-item" onclick="showProfileTab('buy')">💰 Купить</div>
+            if (!code) {
+                msg.textContent = '❌ Введи код бета-теста!';
+                msg.style.color = '#e74c3c';
+                return;
+            }
 
-                <div class="community-stats">
-                    <div style="color:#888; font-size:13px; margin-bottom:8px;">СООБЩЕСТВО</div>
-                    <div class="stat"><span>Discord</span><span class="count">12.4K</span></div>
-                    <div class="stat"><span>Telegram</span><span class="count">13.7K</span></div>
-                    <div class="stat"><span>VK</span><span class="count">12.8K</span></div>
-                </div>
-
-                <div class="logout-btn" onclick="logout()">↩ Выйти</div>
-            </div>
-
-            <!-- ===== ПРАВАЯ ПАНЕЛЬ ===== -->
-            <div class="profile-content">
-
-                <!-- ===== ПРОФИЛЬ ===== -->
-                <div class="tab active" id="tab-profile">
-                    <h2 style="color:#ff6b35; font-size:22px;" id="profileDisplayName">Логин</h2>
-                    <div style="color:#888; font-size:14px; margin-top:4px;" id="profileDisplayUID">UID 00000</div>
-                    <div style="margin-top:15px; display:flex; gap:15px; flex-wrap:wrap;">
-                        <div><span style="color:#666;">Статус:</span> <span style="color:#2ecc71;">● В сети</span></div>
-                        <div><span style="color:#666;">Подписка:</span> <span id="profileSubStatus" style="color:#e74c3c;">Нет подписки</span></div>
-                    </div>
-                    <div style="margin-top:10px; color:#666; font-size:13px;" id="profileJoinedDate">На платформе с 29 августа 2026 г.</div>
-                </div>
-
-                <!-- ===== ПОДПИСКИ ===== -->
-                <div class="tab" id="tab-subscriptions">
-                    <h2 style="color:#ff6b35; font-size:22px;">Подписки</h2>
-                    <p style="color:#888; font-size:14px;">Активные тарифы, сроки действия и история активаций.</p>
-                    <br>
-                    <div class="subscription-box">
-                        <div class="no-sub">
-                            <span class="icon">📦</span>
-                            <div style="color:#888; font-size:16px;" id="subStatusText">Нет активной подписки</div>
-                            <div style="color:#666; font-size:13px; margin-top:4px;">Приобретите доступ, чтобы пользоваться клиентом</div>
-                            <br>
-                            <button onclick="showProfileTab('buy')" class="btn btn-gold">Приобрести доступ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ===== КУПИТЬ ===== -->
-                <div class="tab" id="tab-buy">
-                    <h2 style="color:#ff6b35; font-size:22px;">Купить доступ</h2>
-                    <p style="color:#888; font-size:14px;">Выбери тариф — один аккаунт открывает все функции CRASH DLC.</p>
-                    <br>
-                    <div class="tariff">
-                        <div class="badge">🔥 НАВСЕГДА</div>
-                        <div style="font-size:14px; color:#888; margin-bottom:4px;">LIFETIME</div>
-                        <div class="price">799 ₽ <span>разовый платёж · Lifetime</span></div>
-                        <ul class="features">
-                            <li>Всё из тарифа «1 год»</li>
-                            <li>Пожизненные обновления</li>
-                            <li>Без повторной оплаты</li>
-                            <li>VIP-роль в Discord</li>
-                        </ul>
-                        <div class="note">⚡ Последний набор. Тариф скоро снимем с продажи — у тех, кто успел, доступ останется навсегда.</div>
-                        <button onclick="buyLifetime()" class="btn btn-gold btn-block">Купить за 799 ₽ →</button>
-                    </div>
-                    <br>
-                    <div style="margin-top:10px;">
-                        <label style="color:#888; font-size:13px; display:block; margin-bottom:4px;">Активация ключа</label>
-                        <div class="key-input">
-                            <input type="text" id="keyInput" placeholder="XXXXXXXX-XXXXX-XXXXX-XXXXX" maxlength="23">
-                            <button onclick="activateKey()" class="btn btn-green">Активировать</button>
-                        </div>
-                        <div id="keyMsg" style="color:#888; font-size:13px; margin-top:6px;"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- ===== ПОДВАЛ ===== -->
-<div class="footer">© 2026 CRASH DLC</div>
-
-<!-- ===== УВЕДОМЛЕНИЯ ===== -->
-<div id="toast" class="hidden toast"></div>
-
-<!-- ===== JAVASCRIPT ===== -->
-<script>
-    // ===== ПОЛЬЗОВАТЕЛИ =====
-    const USERS = [
-        { name: 'lxneo', password: '1234', role: 'admin', balance: 999999, subscription: true },
-        { name: 'fridiz', password: '1234', role: 'admin', balance: 999999, subscription: true },
-        { name: 'user1', password: '1234', role: 'user', balance: 0, subscription: false }
-    ];
-
-    let currentUser = null;
-    let currentUID = 76242;
-
-    function findUser(name) {
-        return USERS.find(u => u.name.toLowerCase() === name.toLowerCase());
-    }
-
-    function generateUID() {
-        return Math.floor(10000 + Math.random() * 90000);
-    }
-
-    // ===== СТРАНИЦЫ =====
-    function showPage(page) {
-        document.querySelectorAll('[id^="page-"]').forEach(el => el.cla
+            if (code === 'BETA2026') {
+                msg.textContent = '✅ Бета-тест активирован! Добро пожаловать!';
+                msg.style.color = '#2ecc71';
+            } else {
+                msg.textContent = '❌ Неверный код! Попробуй ещё.';
+                msg.style.color = '#e74c3c';
+            }
+        }
+    </script>
+</body>
+</html>
