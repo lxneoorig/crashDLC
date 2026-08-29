@@ -1,631 +1,178 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Crash DLC — Minecraft Client</title>
+    <title>Crash DLC</title>
+    <meta charset="utf-8">
     <style>
-        /* ===== ОБЩИЕ СТИЛИ ===== */
-        * {
+        body {
+            font-family: Arial;
+            background: #0a0a12;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
             margin: 0;
-            padding: 0;
+        }
+        .box {
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid #333;
+            min-width: 300px;
+        }
+        h1 {
+            color: #ff6b35;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #888;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #0a0a12;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 10px;
             box-sizing: border-box;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #0a0a12;
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        a {
-            color: #fff;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* ===== ШАПКА ===== */
-        header {
-            background: rgba(10, 10, 18, 0.95);
-            padding: 10px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(20px);
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            color: #fff;
-            letter-spacing: 2px;
-        }
-        .logo span {
-            color: #ff6b35;
-        }
-        nav {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        nav a {
-            padding: 8px 18px;
-            border-radius: 8px;
-            transition: 0.3s;
-            font-weight: 500;
-            font-size: 14px;
-            cursor: pointer;
-            color: rgba(255,255,255,0.7);
-        }
-        nav a:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.05);
-        }
-        nav a.active {
-            color: #fff;
-            background: rgba(255, 107, 53, 0.15);
-        }
-        .nav-login {
-            background: #ff6b35;
-            border-radius: 8px;
-            padding: 8px 24px;
-            color: #fff !important;
-            font-weight: 600;
-        }
-        .nav-login:hover {
-            background: #ff8255 !important;
-            transform: scale(1.02);
-        }
-        .nav-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            padding: 4px 8px 4px 16px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .nav-user .mini-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #ff6b35;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-        }
-        .hidden {
-            display: none !important;
-        }
-
-        /* ===== КОНТЕЙНЕР ===== */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        /* ===== ГЛАВНАЯ ===== */
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(180deg, rgba(255,107,53,0.05) 0%, transparent 100%);
-            border-radius: 24px;
-            margin-bottom: 30px;
-        }
-        .hero h1 {
-            font-size: 4.5em;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ff6b35, #ff4500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 4px;
-        }
-        .hero p {
-            font-size: 1.2em;
-            color: rgba(255,255,255,0.6);
-            margin-top: 15px;
-            letter-spacing: 1px;
-        }
-        .hero .subtitle {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        .hero .subtitle span {
-            background: rgba(255,255,255,0.05);
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-size: 13px;
-            color: rgba(255,255,255,0.7);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .hero .btn-group {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* ===== КАРТОЧКИ ===== */
-        .card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
-        .card:hover {
-            border-color: rgba(255,107,53,0.2);
-            background: rgba(255,255,255,0.05);
-        }
-        .card h2 {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: #fff;
-            font-weight: 700;
-        }
-        .card p {
-            color: rgba(255,255,255,0.6);
-            line-height: 1.7;
-        }
-        .card .date {
-            color: rgba(255,255,255,0.3);
-            font-size: 12px;
-        }
-
-        /* ===== КНОПКИ ===== */
-        .btn {
-            display: inline-block;
-            padding: 12px 32px;
-            background: #ff6b35;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-        .btn:hover {
-            background: #ff8255;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255,107,53,0.2);
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.05);
-            box-shadow: none;
-        }
-        .btn-green {
-            background: #2ecc71;
-        }
-        .btn-green:hover {
-            background: #27ae60;
-            box-shadow: 0 10px 30px rgba(46,204,113,0.2);
-        }
-        .btn-block {
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        /* ===== ФОРМЫ ===== */
-        .form-group {
-            margin-bottom: 16px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: rgba(255,255,255,0.7);
-            font-weight: 500;
-            font-size: 13px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.03);
-            color: #fff;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-        .form-group input:focus {
+        input:focus {
             border-color: #ff6b35;
             outline: none;
-            background: rgba(255,255,255,0.05);
         }
-        .form-group input::placeholder {
-            color: rgba(255,255,255,0.3);
-        }
-        .form-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .form-row .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        /* ===== ПРОФИЛЬ ===== */
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        .avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b35, #ff4500);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 800;
-            color: #fff;
-        }
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .profile-role {
-            color: rgba(255,255,255,0.5);
-            font-size: 14px;
-        }
-        .profile-role.admin-text {
-            color: #ff6b35;
-        }
-
-        /* ===== АДМИН-ПАНЕЛЬ ===== */
-        .user-list {
-            list-style: none;
-            padding: 0;
-        }
-        .user-list li {
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.03);
+        button {
+            width: 100%;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 14px;
             border-radius: 8px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-        .user-list .role {
-            font-size: 12px;
-            padding: 3px 12px;
-            border-radius: 40px;
-            background: rgba(255,255,255,0.05);
-        }
-        .user-list .role.admin {
-            background: rgba(255,107,53,0.2);
-            color: #ff6b35;
-        }
-        .admin-badge {
-            background: rgba(255,107,53,0.15);
-            padding: 2px 12px;
-            border-radius: 40px;
-            font-size: 11px;
-            color: #ff6b35;
-            margin-left: 8px;
-        }
-
-        /* ===== НОВОСТИ ===== */
-        .news-item {
-            padding: 16px 20px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border-left: 3px solid #ff6b35;
-            background: rgba(255,255,255,0.02);
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
             transition: 0.3s;
         }
-        .news-item:hover {
-            background: rgba(255,255,255,0.04);
+        button:hover {
+            background: #ff8255;
+            transform: scale(1.02);
         }
-        .news-item .date {
-            color: rgba(255,255,255,0.3);
-            font-size: 12px;
-        }
-        .news-item strong {
-            color: #fff;
+        #msg {
+            margin-top: 15px;
             font-size: 16px;
+            font-weight: bold;
         }
-        .news-item p {
-            color: rgba(255,255,255,0.5);
-            font-size: 14px;
-            margin-top: 4px;
+        .success {
+            color: #2ecc71;
         }
-        .news-item .tag {
-            display: inline-block;
-            background: rgba(255,107,53,0.1);
-            padding: 2px 12px;
-            border-radius: 40px;
-            font-size: 11px;
-            color: #ff6b35;
-            margin-top: 6px;
+        .error {
+            color: #e74c3c;
         }
-
-        /* ===== ТОСТ ===== */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 14px 24px;
+        .hidden {
+            display: none;
+        }
+        #dashboard {
+            margin-top: 20px;
+            padding: 20px;
+            background: #1a1a2e;
             border-radius: 12px;
-            background: #2ecc71;
-            color: #fff;
-            font-weight: 500;
-            z-index: 999;
-            animation: slideUp 0.4s ease;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid #2ecc71;
         }
-        .toast.error {
+        #dashboard h2 {
+            color: #2ecc71;
+        }
+        .logout-btn {
             background: #e74c3c;
+            margin-top: 10px;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== ПОДВАЛ ===== */
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: rgba(255,255,255,0.2);
-            border-top: 1px solid rgba(255,255,255,0.03);
-            margin-top: 30px;
-            font-size: 13px;
-        }
-
-        /* ===== АДАПТИВ ===== */
-        @media (max-width: 700px) {
-            header {
-                flex-direction: column;
-                gap: 10px;
-                padding: 10px 15px;
-            }
-            nav {
-                justify-content: center;
-                gap: 3px;
-            }
-            nav a {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
-            .hero h1 {
-                font-size: 2.8em;
-            }
-            .btn-group {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-            }
-            .form-row {
-                flex-direction: column;
-            }
-            .card {
-                padding: 20px;
-            }
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
+        .logout-btn:hover {
+            background: #c0392b;
         }
     </style>
 </head>
 <body>
 
-<!-- ===== ШАПКА ===== -->
-<header>
-    <div class="logo">CRASH<span>DLC</span></div>
-    <nav>
-        <a onclick="showPage('main')" id="navMain" class="active">Главная</a>
-        <a onclick="showPage('launcher')" id="navLauncher" class="hidden">Лаунчер</a>
-        <a onclick="showPage('community')" id="navCommunity">Сообщество</a>
-        <a onclick="showPage('profile')" id="navProfile" class="hidden">Профиль</a>
-        <a onclick="showPage('login')" id="navLogin" class="nav-login">Вход</a>
-        <a onclick="logout()" id="navLogout" class="hidden">Выйти</a>
-    </nav>
-</header>
-
-<!-- ===== КОНТЕЙНЕР ===== -->
-<div class="container">
-
-    <!-- ===== ГЛАВНАЯ ===== -->
-    <div id="page-main">
-        <div class="hero">
-            <h1>CRASH DLC</h1>
-            <p>Мощный Minecraft клиент для профессионалов</p>
-            <div class="subtitle">
-                <span>🔒 Анти-бан</span>
-                <span>⚡ Автофарм</span>
-                <span>🛡 ScreenShare</span>
-            </div>
-            <div class="btn-group">
-                <a onclick="showPage('login')" class="btn">🚀 Начать</a>
-                <a onclick="showPage('community')" class="btn btn-outline">Сообщество</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>🔥 Особенности</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0;">
-                <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); color: rgba(255,255,255,0.6);">✅ Автокликер</div>
-                <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); color: rgba(255,255,255,0.6);">✅ Автофарм</div>
-                <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); color: rgba(255,255,255,0.6);">✅ X-Ray</div>
-                <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); color: rgba(255,255,255,0.6);">✅ Fly / Speed</div>
-                <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); color: rgba(255,255,255,0.6);">✅ Анти-бан</div>
-                <div style="padding: 10px; color: rgba(255,255,255,0.6);">✅ ScreenShare</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== ЛАУНЧЕР ===== -->
-    <div id="page-launcher" class="hidden">
-        <div class="card">
-            <h2>📥 Скачать лаунчер</h2>
-            <p>Выберите версию:</p>
-            <br>
-            <div class="btn-group">
-                <a href="#" class="btn btn-block">Windows (exe)</a>
-                <a href="#" class="btn btn-green btn-block">macOS (dmg)</a>
-                <a href="#" class="btn btn-outline btn-block">Linux (AppImage)</a>
-            </div>
-            <br>
-            <p style="color: rgba(255,255,255,0.3); font-size: 13px;">Версия: v2.5.0</p>
-        </div>
-    </div>
-
-    <!-- ===== СООБЩЕСТВО ===== -->
-    <div id="page-community">
-        <div class="card">
-            <h2>💬 Сообщество</h2>
-            <p>Присоединяйся к нам!</p>
-            <br>
-            <div class="btn-group">
-                <a href="#" class="btn btn-block">Discord</a>
-                <a href="#" class="btn btn-outline btn-block">Telegram</a>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>📢 Новости</h2>
-
-            <div class="news-item" style="border-left-color: #ff6b35;">
-                <div class="date">🔴 29 августа 2026</div>
-                <strong>⚙️ Разработка Crash DLC v3.0</strong>
-                <p>Началась разработка новой версии с улучшенным анти-баном!</p>
-                <span class="tag">#разработка</span>
-            </div>
-
-            <div class="news-item" style="border-left-color: #2ecc71;">
-                <div class="date">✅ 27 августа 2026</div>
-                <strong>Обновление v2.5.0</strong>
-                <p>Добавлена защита от ScreenShare, улучшен анти-бан.</p>
-                <span class="tag">#обновление</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== ВХОД ===== -->
-    <div id="page-login" class="hidden">
-        <div class="card" style="max-width: 420px; margin: 0 auto;">
-            <h2 style="text-align:center;">Вход</h2>
-            <br>
-            <form onsubmit="login(event)">
-                <div class="form-group">
-                    <label>Логин</label>
-                    <input type="text" id="loginUsername" placeholder="Введите логин" required>
-                </div>
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" id="loginPassword" placeholder="Введите пароль" required>
-                </div>
-                <button type="submit" class="btn btn-block">Войти</button>
-            </form>
-            <br>
-            <p style="text-align: center; color: rgba(255,255,255,0.4); font-size: 14px;">
-                Нет аккаунта? <a onclick="showRegister()" style="color: #ff6b35; cursor:pointer;">Зарегистрируйся</a>
-            </p>
-        </div>
-
-        <div id="registerBlock" class="hidden">
-            <div class="card" style="max-width: 420px; margin: 0 auto;">
-                <h2 style="text-align:center;">Регистрация</h2>
-                <br>
-                <form onsubmit="register(event)">
-                    <div class="form-group">
-                        <label>Логин</label>
-                        <input type="text" id="regUsername" placeholder="Придумай логин" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Пароль</label>
-                        <input type="password" id="regPassword" placeholder="Придумай пароль" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Повтори пароль</label>
-                        <input type="password" id="regPassword2" placeholder="Повтори пароль" required>
-                    </div>
-                    <button type="submit" class="btn btn-green btn-block">Зарегистрироваться</button>
-                </form>
-                <br>
-                <p style="text-align: center; color: rgba(255,255,255,0.4); font-size: 14px;">
-                    Уже есть аккаунт? <a onclick="showLogin()" style="color: #ff6b35; cursor:pointer;">Войти</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== ПРОФИЛЬ ===== -->
-    <div id="page-profile" class="hidden">
-        <div class="card">
-            <div class="profile-header">
-                <div class="avatar" id="profileAvatar">L</div>
-                <div>
-                    <div class="profile-name" id="profileName">Логин</div>
-                    <div class="profile-role" id="profileRole">Игрок</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="adminPanel" class="hidden">
-            <div class="card" style="border: 1px solid rgba(255,107,53,0.2);">
-                <h2>👑 Админ-панель</h2>
-                <p style="color: rgba(255,255,255,0.4);">Управление пользователями</p>
-                <br>
-                <ul class="user-list" id="userList"></ul>
-            </div>
-        </div>
-    </div>
-
+<div class="box" id="loginBox">
+    <h1>CRASH DLC</h1>
+    <p>Войди в свой аккаунт</p>
+    
+    <input type="text" id="loginInput" placeholder="Логин">
+    <input type="password" id="passInput" placeholder="Пароль">
+    
+    <button onclick="login()">🔑 Войти</button>
+    
+    <div id="msg"></div>
 </div>
 
-<footer>
-    © 2026 Crash DLC
-</footer>
+<div class="hidden" id="dashboard">
+    <h2>✅ Добро пожаловать!</h2>
+    <p id="userName" style="color: #ff6b35; font-size: 20px;"></p>
+    <p id="userRole" style="color: #888;"></p>
+    <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
+</div>
 
-<div id="toast" class="hidden toast"></div>
-
-<!-- ===== JAVASCRIPT ===== -->
 <script>
-    const ADMINS = ['lxneo', 'fridiz'];
+    // ===== СПИСОК ПОЛЬЗОВАТЕЛЕЙ =====
+    const users = [
+        { name: 'lxneo', password: '1234', role: 'admin' },
+        { name: 'fridiz', password: '1234', role: 'admin' },
+        { name: 'user1', password: '1234', role: 'user' },
+        { name: 'user2', password: '1234', role: 'user' }
+    ];
 
-    function showPage(page) {
-        document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
-        const target = document.getElementById('page-' + page);
-        if (target) target.classList.remove('hidden');
+    function login() {
+        const loginInput = document.getElementById('loginInput').value.trim();
+        const passInput = document.getElementById('passInput').value.trim();
+        const msg = document.getElementById('msg');
 
-        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-        const navMap = {
-            'main': 'navMain',
-            'launcher': 'navLauncher',
-            'community': 'navCommunity',
-            'pro
+        // Проверяем, что поля не пустые
+        if (loginInput === '' || passInput === '') {
+            msg.textContent = '❌ Заполни все поля!';
+            msg.className = 'error';
+            return;
+        }
+
+        // Ищем пользователя
+        const found = users.find(u => u.name === loginInput && u.password === passInput);
+
+        if (found) {
+            msg.textContent = '✅ Вход выполнен!';
+            msg.className = 'success';
+            
+            // Показываем панель
+            document.getElementById('loginBox').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            document.getElementById('userName').textContent = '👤 ' + found.name;
+            document.getElementById('userRole').textContent = 'Роль: ' + (found.role === 'admin' ? '👑 Администратор' : '🎮 Игрок');
+        } else {
+            msg.textContent = '❌ Неверный логин или пароль!';
+            msg.className = 'error';
+        }
+    }
+
+    function logout() {
+        document.getElementById('loginBox').classList.remove('hidden');
+        document.getElementById('dashboard').classList.add('hidden');
+        document.getElementById('loginInput').value = '';
+        document.getElementById('passInput').value = '';
+        document.getElementById('msg').textContent = '';
+    }
+
+    // Нажатие Enter для входа
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            login();
+        }
+    });
+</script>
+
+</body>
+</html>
