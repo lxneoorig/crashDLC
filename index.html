@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crash DLC</title>
+    <meta charset="utf-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0a0a12;
+            color: #fff;
+            min-height: 100vh;
+        }
+        header {
+            background: #141a24;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff6b35;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b35, #ff4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        nav a {
+            color: #aaa;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            background: none;
+        }
+        nav a:hover {
+            color: #fff;
+            background: rgba(255,107,53,0.15);
+        }
+        .nav-login {
+            color: #fff !important;
+            background: #ff6b35;
+            border-radius: 8px;
+            padding: 8px 24px;
+        }
+        .nav-login:hover {
+            background: #ff8255 !important;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: #141a24;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid #2a2a3e;
+        }
+        .card h2 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+        .btn {
+            padding: 12px 32px;
+            background: #ff6b35;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #ff8255;
+            transform: scale(1.02);
+        }
+        .btn-green {
+            background: #2ecc71;
+        }
+        .btn-green:hover {
+            background: #27ae60;
+        }
+        .btn-gold {
+            background: #f39c12;
+        }
+        .btn-gold:hover {
+            background: #e67e22;
+        }
+        .btn-block {
+            width: 100%;
+            display: block;
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #2a2a3e;
+            background: #0a0a12;
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+        input:focus {
+            border-color: #ff6b35;
+            outline: none;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+            font-weight: 500;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b35, #ff4500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: #2ecc71;
+            color: #fff;
+            font-weight: 500;
+            z-index: 999;
+            animation: fadeIn 0.4s ease;
+        }
+        .toast.error {
+            background: #e74c3c;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #444;
+            border-top: 1px solid #1a1a2e;
+            margin-top: 30px;
+        }
+        .balance-badge {
+            background: rgba(46,204,113,0.15);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 14px;
+            border: 1px solid rgba(46,204,113,0.2);
+            color: #2ecc71;
+            font-weight: 600;
+        }
+        .admin-badge {
+            background: #ff6b35;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+        .user-list li {
+            padding: 10px 15px;
+            background: #0a0a12;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .balance {
+            color: #2ecc71;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .product {
+            background: #0a0a12;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            border: 1px solid #2a2a3e;
+        }
+        .product .price {
+            color: #f39c12;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 700px) {
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+            header { flex-direction: column; gap: 10px; }
+            nav { justify-content: center; }
+            .profile-header { flex-direction: column; text-align: center; }
+            .product { flex-direction: column; text-align: center; gap: 10px; }
+        }
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .hero h1 {
+            font-size: 4em;
+            background: linear-gradient(135deg, #ff6b35, #ff4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            color: #888;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .tags {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .tags span {
+            background: #1a1a2e;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            border: 1px solid #2a2a3e;
+        }
+        #loginMsg {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== ШАПКА ===== -->
+<header>
+    <div class="logo">CRASH DLC</div>
+    <nav>
+        <a onclick="showPage('main')" id="navMain">Главная</a>
+        <a onclick="showPage('shop')" id="navShop" class="hidden">Магазин</a>
+        <a onclick="showPage('community')" id="navCommunity">Сообщество</a>
+        <a onclick="showPage('profile')" id="navProfile" class="hidden">Профиль</a>
+        <a onclick="showPage('login')" id="navLogin" class="nav-login">Вход</a>
+        <a onclick="logout()" id="navLogout" class="hidden">Выйти</a>
+        <span id="balanceDisplay" class="hidden balance-badge">💰 0 ₽</span>
+    </nav>
+</header>
+
+<!-- ===== КОНТЕЙНЕР ===== -->
+<div class="container">
+
+    <!-- ===== ГЛАВНАЯ ===== -->
+    <div id="page-main">
+        <div class="card hero">
+            <h1>CRASH DLC</h1>
+            <p>Мощный Minecraft клиент</p>
+            <div class="tags">
+                <span>🔒 Анти-бан</span>
+                <span>⚡ Автофарм</span>
+                <span>🛡 ScreenShare</span>
+            </div>
+            <button onclick="showPage('login')" class="btn">🚀 Начать</button>
+        </div>
+        <div class="card">
+            <h2>🔥 Особенности</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+                <div style="padding:8px 0; color:#aaa;">✅ Автокликер</div>
+                <div style="padding:8px 0; color:#aaa;">✅ Автофарм</div>
+                <div style="padding:8px 0; color:#aaa;">✅ X-Ray</div>
+                <div style="padding:8px 0; color:#aaa;">✅ Fly / Speed</div>
+                <div style="padding:8px 0; color:#aaa;">✅ Анти-бан</div>
+                <div style="padding:8px 0; color:#aaa;">✅ ScreenShare</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== МАГАЗИН ===== -->
+    <div id="page-shop" class="hidden">
+        <div class="card">
+            <h2>🛒 Магазин</h2>
+            <div class="shop-grid">
+                <div class="product">
+                    <div>
+                        <h3>🚀 Лаунчер</h3>
+                        <p>Навсегда</p>
+                    </div>
+                    <div>
+                        <div class="price">200 ₽</div>
+                        <button onclick="buyLauncher()" class="btn btn-gold" style="margin-top:8px;">Купить</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div>
+                        <h3>💰 Пополнить</h3>
+                        <p>Баланс</p>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+                        <button onclick="addBalance(100)" class="btn btn-green">+100</button>
+                        <button onclick="addBalance(500)" class="btn btn-green">+500</button>
+                        <button onclick="addBalance(1000)" class="btn btn-green">+1000</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>📜 История</h2>
+            <div id="historyList"><p style="color:#666;">История пуста</p></div>
+        </div>
+    </div>
+
+    <!-- ===== СООБЩЕСТВО ===== -->
+    <div id="page-community">
+        <div class="card">
+            <h2>💬 Сообщество</h2>
+            <div class="btn-group">
+                <a href="#" class="btn btn-block">Discord</a>
+                <a href="#" class="btn btn-green btn-block">Telegram</a>
+            </div>
+        </div>
+        <div class="card">
+            <h2>📢 Новости</h2>
+            <div style="background:#0a0a12; padding:15px; border-radius:8px; border-left:3px solid #ff6b35;">
+                <div style="color:#666; font-size:12px;">29 августа 2026</div>
+                <strong>Разработка v3.0</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ВХОД ===== -->
+    <div id="page-login" class="hidden">
+        <div class="card" style="max-width:400px; margin:0 auto;">
+            <h2 style="text-align:center;">🔑 Вход</h2>
+            <br>
+            <div class="form-group">
+                <label>Логин</label>
+                <input type="text" id="loginInput" placeholder="Введите логин">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" id="passInput" placeholder="Введите пароль">
+            </div>
+            <button onclick="login()" class="btn btn-block">Войти</button>
+            <p id="loginMsg"></p>
+        </div>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ ===== -->
+    <div id="page-profile" class="hidden">
+        <div class="card">
+            <div class="profile-header">
+                <div class="avatar" id="profileAvatar">L</div>
+                <div>
+                    <h2 id="profileName">Логин</h2>
+                    <p id="profileRole">Игрок</p>
+                    <p><span class="balance" id="profileBalance">💰 0 ₽</span></p>
+                    <p id="licenseStatus" class="hidden" style="color:#2ecc71;">✅ Лицензия активна</p>
+                </div>
+            </div>
+        </div>
+        <div id="adminPanel" class="hidden">
+            <div class="card" style="border-color:#ff6b35;">
+                <h2>👑 Админ-панель</h2>
+                <ul class="user-list" id="userList"></ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>© 2026 Crash DLC</footer>
+<div id="toast" class="hidden toast"></div>
+
+<script>
+    // ===== БАЗА ДАННЫХ =====
+    let USERS = [];
+    let currentUser = null;
+
+    function loadUsers() {
+        const data = localStorage.getItem('users');
+        if (data) {
+            USERS = JSON.parse(data);
+        } else {
+            USERS = [
+                { name: 'lxneo', password: '1234', role: 'admin', balance: 999999, license: true, history: [] },
+                { name: 'fridiz', password: '1234', role: 'admin', balance: 999999, license: true, history: [] },
+                { name: 'user1', password: '1234', role: 'user', balance: 500, license: false, history: [] }
+            ];
+            saveUsers();
+        }
+    }
+
+    function saveUsers() {
+        localStorage.setItem('users', JSON.stringify(USERS));
+    }
+
+    function findUser(name) {
+        return USERS.find(u => u.name.toLowerCase() === name.toLowerCase());
+    }
+
+    // ===== НАВИГАЦИЯ =====
+    function showPage(page) {
+        document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+        const target = document.getElementById('page-' + page);
+        if (target) target.classList.remove('hidden');
+        if (page === 'profile') updateProfile();
+        if (page === 'login') document.getElementById('loginMsg').textContent = '';
+        if (page === 'shop') renderHistory();
+    }
+
+    // ===== ВХОД =====
+    function login() {
+        const name = document.getElementById('loginInput').value.trim();
+        const pass = document.getElementById('passInput').value.trim();
+        const msg = document.getElementById('loginMsg');
+
+        if (!name || !pass) {
+            msg.textContent = '❌ Заполни все поля!';
+            msg.style.color = '#e74c3c';
+            return;
+        }
+
+        loadUsers();
+        const user = findUser(name);
+
+        if (user && user.password === pass) {
+            currentUser = user;
+            msg.textContent = '✅ Вход выполнен!';
+            msg.style.color = '#2ecc71';
+            updateUI();
+            showPage('profile');
+            showToast('Добро пожаловать, ' + user.name + '!');
+        } else {
+            msg.textContent = '❌ Неверный логин или пароль!';
+            msg.style.color = '#e74c3c';
+        }
+    }
+
+    // ===== ВЫХОД =====
+    function logout() {
+        currentUser = null;
+        updateUI();
+        showPage('main');
+        showToast('Вы вышли из аккаунта');
+    }
+
+    // ===== ОБНОВЛЕНИЕ =====
+    function updateUI() {
+        const logged = currentUser !== null;
+        document.getElementById('navLogin').style.display = logged ? 'none' : '';
+        document.getElementById('navLogout').style.display = logged ? '' : 'none';
+        document.getElementById('navProfile').style.display = logged ? '' : 'none';
+        document.getElementById('navShop').style.display = logged ? '' : 'none';
+        document.getElementById('balanceDisplay').style.display = logged ? '' : 'none';
+
+        if (logged) {
+            const isAdmin = currentUser.role === 'admin';
+            document.getElementById('balanceDisplay').textContent = '💰 ' + (isAdmin ? '♾' : currentUser.balance + ' ₽');
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('profileRole').textContent = isAdmin ? '👑 Администратор' : '🎮 Игрок';
+            document.getElementById('profileBalance').textContent = '💰 ' + (isAdmin ? '♾ Бесконечно' : currentUser.balance + ' ₽');
+
+            const lic = document.getElementById('licenseStatus');
+            if (currentUser.license) lic.classList.remove('hidden');
+            else lic.classList.add('hidden');
+
+            renderAdminPanel();
+            renderHistory();
+        }
+    }
+
+    function updateProfile() {
+        if (!currentUser) { showPage('login'); return; }
+        updateUI();
+    }
+
+    // ===== МАГАЗИН =====
+    function buyLauncher() {
+        if (!currentUser) { showToast('Сначала войдите!', 'error'); return; }
+        if (currentUser.license) { showToast('У вас уже есть лицензия!', 'error'); return; }
+
+        if (currentUser.role === 'admin') {
+            currentUser.license = true;
+            saveUsers();
+            showToast('✅ Лицензия активирована!');
+            updateUI();
+            return;
+        }
+
+        if (currentUser.balance < 200) {
+            showToast('❌ Недостаточно средств!', 'error');
+            return;
+        }
+
+        currentUser.balance -= 200;
+        currentUser.license = true;
+        if (!currentUser.history) currentUser.history = [];
+        currentUser.history.push({ date: new Date().toLocaleString(), desc: 'Покупка лаунчера', amount: -200 });
+        saveUsers();
+        showToast('✅ Лаунчер куплен навсегда!');
+        updateUI();
+    }
+
+    function addBalance(amount) {
+        if (!currentUser) { showToast('Сначала войдите!', 'error'); return; }
+        if (currentUser.role === 'admin') { showToast('У админов бесконечный баланс!', 'error'); return; }
+
+        currentUser.balance += amount;
+        if (!currentUser.history) currentUser.history = [];
+        currentUser.history.push({ date: new Date().toLocaleString(), desc: 'Пополнение баланса', amount: amount });
+        saveUsers();
+        showToast('✅ Баланс пополнен на ' + amount + ' ₽');
+        updateUI();
+    }
+
+    function renderHistory() {
+        const list = document.getElementById('historyList');
+        if (!currentUser || !currentUser.history || currentUser.history.length === 0) {
+            list.innerHTML = '<p style="color:#666;">История пуста</p>';
+            return;
+        }
+        list.innerHTML = currentUser.history.slice().reverse().map(h => `
+            <div style="padding:10px 15px;background:#0a0a12;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;flex-wrap:wrap;border-left:3px solid #2ecc71;">
+                <span style="color:#666;font-size:12px;">${h.date}</span>
+                <span style="color:#aaa;">${h.desc}</span>
+                <span style="font-weight:700;color:${h.amount >= 0 ? '#2ecc71' : '#e74c3c'};">${h.amount >= 0 ? '+' : ''}${h.amount} ₽</span>
+            </div>
+        `).join('');
+    }
+
+    // ===== АДМИНКА =====
+    function renderAdminPanel() {
+        const panel = document.getElementById('adminPanel');
+        const list = document.getElementById('userList');
+
+        if (currentUser && currentUser.role === 'admin') {
+            panel.classList.remove('hidden');
+            loadUsers();
+            list.innerHTML = USERS.map(u => `
+                <li>
+                    <span>${u.name} ${u.role === 'admin' ? '<span style="background:#ff6b35;padding:2px 12px;border-radius:40px;font-size:11px;
