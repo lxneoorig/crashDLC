@@ -108,6 +108,29 @@
             font-size: 14px;
             min-height: 20px;
         }
+
+        /* ===== НОВАЯ КНОПКА СООБЩЕСТВА ===== */
+        .btn-community {
+            display: inline-block;
+            padding: 14px 40px;
+            background: #7b3fbf;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            width: 100%;
+            margin-top: 12px;
+        }
+        .btn-community:hover {
+            background: #9b5fd9;
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(123, 63, 191, 0.5);
+        }
+
         .status {
             margin-top: 18px;
             font-size: 13px;
@@ -158,6 +181,9 @@
         <div class="btn-lock">📥 Установить</div>
         <div class="dev-note"><span>⏳ В разработке...</span></div>
 
+        <!-- ===== НОВАЯ КНОПКА СООБЩЕСТВА ===== -->
+        <a href="https://lx-dls.github.io/" target="_blank" class="btn-community">🌐 Сообщество</a>
+
         <div id="msg"></div>
 
         <div class="status">
@@ -171,9 +197,5 @@
     </div>
 
     <div class="footer">© 2026 CRASH DLC</div>
-
-    <script>
-        // Кнопка заблокирована, ничего не делает
-    </script>
 </body>
 </html>
