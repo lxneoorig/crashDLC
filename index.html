@@ -4,173 +4,477 @@
     <title>Crash DLC</title>
     <meta charset="utf-8">
     <style>
-        body {
-            font-family: Arial;
-            background: #0a0a12;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .box {
-            background: #1a1a2e;
-            padding: 40px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid #333;
-            min-width: 300px;
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a12;
+            color: #fff;
+            min-height: 100vh;
         }
-        h1 {
+        header {
+            background: #141a24;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff6b35;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
             color: #ff6b35;
-            font-size: 36px;
-            margin-bottom: 10px;
         }
-        p {
-            color: #888;
-            margin-bottom: 20px;
+        .logo span {
+            color: #fff;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        nav a:hover {
+            background: rgba(255,107,53,0.2);
+        }
+        .nav-login {
+            background: #ff6b35;
+            border-radius: 8px;
+            padding: 8px 24px;
+        }
+        .nav-login:hover {
+            background: #ff8255 !important;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: #141a24;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid #2a2a3e;
+        }
+        .card h2 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+        }
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #ff6b35;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #ff8255;
+            transform: scale(1.02);
+        }
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        .btn-green {
+            background: #2ecc71;
+        }
+        .btn-green:hover {
+            background: #27ae60;
+        }
+        .hidden {
+            display: none !important;
         }
         input {
             width: 100%;
-            padding: 12px;
+            padding: 12px 16px;
             border-radius: 8px;
-            border: 1px solid #333;
+            border: 1px solid #2a2a3e;
             background: #0a0a12;
-            color: white;
-            font-size: 16px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 12px;
         }
         input:focus {
             border-color: #ff6b35;
             outline: none;
         }
-        button {
-            width: 100%;
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+            font-weight: 500;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             background: #ff6b35;
-            color: white;
-            border: none;
-            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 24px;
             border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
+            background: #2ecc71;
+            color: #fff;
+            font-weight: 500;
+            z-index: 999;
         }
-        button:hover {
-            background: #ff8255;
-            transform: scale(1.02);
-        }
-        #msg {
-            margin-top: 15px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .success {
-            color: #2ecc71;
-        }
-        .error {
-            color: #e74c3c;
-        }
-        .hidden {
-            display: none;
-        }
-        #dashboard {
-            margin-top: 20px;
-            padding: 20px;
-            background: #1a1a2e;
-            border-radius: 12px;
-            border: 1px solid #2ecc71;
-        }
-        #dashboard h2 {
-            color: #2ecc71;
-        }
-        .logout-btn {
+        .toast.error {
             background: #e74c3c;
-            margin-top: 10px;
         }
-        .logout-btn:hover {
-            background: #c0392b;
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #444;
+            border-top: 1px solid #1a1a2e;
+            margin-top: 30px;
+        }
+        .admin-badge {
+            background: #ff6b35;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+        .user-list li {
+            padding: 10px 15px;
+            background: #0a0a12;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .role {
+            font-size: 12px;
+            padding: 3px 12px;
+            border-radius: 40px;
+            background: #2a2a3e;
+        }
+        .role.admin {
+            background: rgba(255,107,53,0.2);
+            color: #ff6b35;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 10px; }
+            nav { display: flex; flex-wrap: wrap; justify-content: center; }
+            .profile-header { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<div class="box" id="loginBox">
-    <h1>CRASH DLC</h1>
-    <p>Войди в свой аккаунт</p>
-    
-    <input type="text" id="loginInput" placeholder="Логин">
-    <input type="password" id="passInput" placeholder="Пароль">
-    
-    <button onclick="login()">🔑 Войти</button>
-    
-    <div id="msg"></div>
+<!-- ===== ШАПКА ===== -->
+<header>
+    <div class="logo">CRASH<span>DLC</span></div>
+    <nav>
+        <a onclick="showPage('main')" id="navMain">Главная</a>
+        <a onclick="showPage('community')" id="navCommunity">Сообщество</a>
+        <a onclick="showPage('login')" id="navLogin" class="nav-login">Вход</a>
+        <a onclick="showPage('profile')" id="navProfile" class="hidden">Профиль</a>
+        <a onclick="logout()" id="navLogout" class="hidden">Выйти</a>
+    </nav>
+</header>
+
+<!-- ===== КОНТЕЙНЕР ===== -->
+<div class="container">
+
+    <!-- ===== ГЛАВНАЯ ===== -->
+    <div id="page-main">
+        <div class="card" style="text-align:center; padding:50px;">
+            <h1 style="font-size:3.5em; color:#ff6b35;">CRASH DLC</h1>
+            <p style="font-size:1.2em; color:#aaa;">Мощный Minecraft клиент для профессионалов</p>
+            <br>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <span style="background:#1a1a2e; padding:6px 16px; border-radius:40px; font-size:13px;">🔒 Анти-бан</span>
+                <span style="background:#1a1a2e; padding:6px 16px; border-radius:40px; font-size:13px;">⚡ Автофарм</span>
+                <span style="background:#1a1a2e; padding:6px 16px; border-radius:40px; font-size:13px;">🛡 ScreenShare</span>
+            </div>
+            <br>
+            <button onclick="showPage('login')" class="btn">🚀 Начать</button>
+        </div>
+
+        <div class="card">
+            <h2>🔥 Особенности</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+                <div style="padding:8px 0; color:#aaa;">✅ Автокликер</div>
+                <div style="padding:8px 0; color:#aaa;">✅ Автофарм</div>
+                <div style="padding:8px 0; color:#aaa;">✅ X-Ray</div>
+                <div style="padding:8px 0; color:#aaa;">✅ Fly / Speed</div>
+                <div style="padding:8px 0; color:#aaa;">✅ Анти-бан</div>
+                <div style="padding:8px 0; color:#aaa;">✅ ScreenShare</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== СООБЩЕСТВО ===== -->
+    <div id="page-community" class="hidden">
+        <div class="card">
+            <h2>💬 Сообщество</h2>
+            <p>Присоединяйся к нам!</p>
+            <br>
+            <div class="btn-group">
+                <a href="#" class="btn btn-block">📱 Discord</a>
+                <a href="#" class="btn btn-green btn-block">📸 Telegram</a>
+            </div>
+        </div>
+        <div class="card">
+            <h2>📢 Новости</h2>
+            <div style="background:#0a0a12; padding:15px; border-radius:8px; margin-bottom:10px; border-left:3px solid #ff6b35;">
+                <div style="color:#666; font-size:12px;">29 августа 2026</div>
+                <strong>⚙️ Разработка Crash DLC v3.0</strong>
+                <p style="color:#888; font-size:14px; margin-top:4px;">Началась разработка новой версии!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ВХОД ===== -->
+    <div id="page-login" class="hidden">
+        <div class="card" style="max-width:400px; margin:0 auto;">
+            <h2 style="text-align:center;">🔑 Вход</h2>
+            <br>
+            <div class="form-group">
+                <label>Логин</label>
+                <input type="text" id="loginInput" placeholder="Введите логин">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" id="passInput" placeholder="Введите пароль">
+            </div>
+            <button onclick="login()" class="btn btn-block">Войти</button>
+            <br>
+            <p id="loginMsg" style="text-align:center; margin-top:10px;"></p>
+        </div>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ ===== -->
+    <div id="page-profile" class="hidden">
+        <div class="card">
+            <div class="profile-header">
+                <div class="avatar" id="profileAvatar">L</div>
+                <div>
+                    <h2 id="profileName">Логин</h2>
+                    <p id="profileRole" style="color:#888;">Игрок</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="adminPanel" class="hidden">
+            <div class="card" style="border-color:#ff6b35;">
+                <h2>👑 Админ-панель</h2>
+                <p style="color:#888;">Управление пользователями</p>
+                <br>
+                <ul class="user-list" id="userList"></ul>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div class="hidden" id="dashboard">
-    <h2>✅ Добро пожаловать!</h2>
-    <p id="userName" style="color: #ff6b35; font-size: 20px;"></p>
-    <p id="userRole" style="color: #888;"></p>
-    <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
-</div>
+<!-- ===== ПОДВАЛ ===== -->
+<footer>
+    © 2026 Crash DLC
+</footer>
 
+<!-- ===== УВЕДОМЛЕНИЯ ===== -->
+<div id="toast" class="hidden toast"></div>
+
+<!-- ===== JAVASCRIPT ===== -->
 <script>
-    // ===== СПИСОК ПОЛЬЗОВАТЕЛЕЙ =====
-    const users = [
+    // ===== СПИСОК АДМИНОВ =====
+    const ADMINS = ['lxneo', 'fridiz'];
+
+    // ===== ПОЛЬЗОВАТЕЛИ =====
+    const USERS = [
         { name: 'lxneo', password: '1234', role: 'admin' },
         { name: 'fridiz', password: '1234', role: 'admin' },
         { name: 'user1', password: '1234', role: 'user' },
         { name: 'user2', password: '1234', role: 'user' }
     ];
 
+    // ===== ТЕКУЩИЙ ПОЛЬЗОВАТЕЛЬ =====
+    let currentUser = null;
+
+    // ===== ПОКАЗАТЬ СТРАНИЦУ =====
+    function showPage(page) {
+        document.querySelectorAll('[id^="page-"]').forEach(el => {
+            el.classList.add('hidden');
+        });
+        const target = document.getElementById('page-' + page);
+        if (target) target.classList.remove('hidden');
+
+        // Обновляем навигацию
+        document.querySelectorAll('nav a').forEach(a => a.classList.remove('nav-login'));
+        const navMap = {
+            'main': 'navMain',
+            'community': 'navCommunity',
+            'login': 'navLogin',
+            'profile': 'navProfile'
+        };
+        const navEl = document.getElementById(navMap[page]);
+        if (navEl) navEl.classList.add('nav-login');
+
+        if (page === 'profile') {
+            updateProfile();
+        }
+
+        // Если на странице логина, очищаем сообщение
+        if (page === 'login') {
+            document.getElementById('loginMsg').textContent = '';
+        }
+    }
+
+    // ===== ВХОД =====
     function login() {
         const loginInput = document.getElementById('loginInput').value.trim();
         const passInput = document.getElementById('passInput').value.trim();
-        const msg = document.getElementById('msg');
+        const msg = document.getElementById('loginMsg');
 
-        // Проверяем, что поля не пустые
-        if (loginInput === '' || passInput === '') {
+        if (!loginInput || !passInput) {
             msg.textContent = '❌ Заполни все поля!';
-            msg.className = 'error';
+            msg.style.color = '#e74c3c';
             return;
         }
 
         // Ищем пользователя
-        const found = users.find(u => u.name === loginInput && u.password === passInput);
+        const found = USERS.find(u => u.name === loginInput && u.password === passInput);
 
         if (found) {
+            currentUser = found;
             msg.textContent = '✅ Вход выполнен!';
-            msg.className = 'success';
-            
-            // Показываем панель
-            document.getElementById('loginBox').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            
-            document.getElementById('userName').textContent = '👤 ' + found.name;
-            document.getElementById('userRole').textContent = 'Роль: ' + (found.role === 'admin' ? '👑 Администратор' : '🎮 Игрок');
+            msg.style.color = '#2ecc71';
+            updateUI();
+            showPage('profile');
+            showToast('Добро пожаловать, ' + found.name + '!');
         } else {
             msg.textContent = '❌ Неверный логин или пароль!';
-            msg.className = 'error';
+            msg.style.color = '#e74c3c';
         }
     }
 
+    // ===== ВЫХОД =====
     function logout() {
-        document.getElementById('loginBox').classList.remove('hidden');
-        document.getElementById('dashboard').classList.add('hidden');
-        document.getElementById('loginInput').value = '';
-        document.getElementById('passInput').value = '';
-        document.getElementById('msg').textContent = '';
+        currentUser = null;
+        updateUI();
+        showPage('main');
+        showToast('Вы вышли из аккаунта');
     }
 
-    // Нажатие Enter для входа
+    // ===== ОБНОВЛЕНИЕ UI =====
+    function updateUI() {
+        const isLoggedIn = currentUser !== null;
+
+        document.getElementById('navLogin').classList.toggle('hidden', isLoggedIn);
+        document.getElementById('navLogout').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('navProfile').classList.toggle('hidden', !isLoggedIn);
+
+        if (isLoggedIn) {
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+            const roleEl = document.getElementById('profileRole');
+            if (currentUser.role === 'admin') {
+                roleEl.textContent = '👑 Администратор';
+                roleEl.style.color = '#ff6b35';
+            } else {
+                roleEl.textContent = '🎮 Игрок';
+                roleEl.style.color = '#888';
+            }
+            renderAdminPanel();
+        }
+    }
+
+    // ===== ПРОФИЛЬ =====
+    function updateProfile() {
+        if (!currentUser) {
+            showPage('login');
+            return;
+        }
+        updateUI();
+    }
+
+    // ===== АДМИН-ПАНЕЛЬ =====
+    function renderAdminPanel() {
+        const adminPanel = document.getElementById('adminPanel');
+        const userList = document.getElementById('userList');
+
+        if (currentUser && currentUser.role === 'admin') {
+            adminPanel.classList.remove('hidden');
+            userList.innerHTML = USERS.map(u => `
+                <li>
+                    <span>${u.name} ${u.role === 'admin' ? '<span class="admin-badge">Админ</span>' : ''}</span>
+                    <span class="role ${u.role === 'admin' ? 'admin' : ''}">${u.role === 'admin' ? 'Админ' : 'Игрок'}</span>
+                </li>
+            `).join('');
+        } else {
+            adminPanel.classList.add('hidden');
+        }
+    }
+
+    // ===== УВЕДОМЛЕНИЯ =====
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast';
+        if (type === 'error') toast.classList.add('error');
+        toast.classList.remove('hidden');
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    }
+
+    // ===== ВХОД ПО ENTER =====
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !document.getElementById('page-login').classList.contains('hidden')) {
             login();
         }
+    });
+
+    // ===== ЗАГРУЗКА =====
+    document.addEventListener('DOMContentLoaded', function() {
+        showPage('main');
     });
 </script>
 
